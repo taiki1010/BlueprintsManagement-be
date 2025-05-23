@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="Portfolio.BlueprintsManagement.infrastructure.db.mapper">
+<mapper namespace="Portfolio.BlueprintsManagement.infrastructure.db.mapper.SiteMapper">
 
     <resultMap id="siteResultMap" type="Portfolio.BlueprintsManagement.domain.model.Site">
         <id column="id" property="id"/>
@@ -10,14 +10,43 @@
         <result column="remark" property="remark"/>
     </resultMap>
 
-    <select id="existSite">
-        select exists(select * from sites where is_deleted = 0)
+    <select id="existSites">
+        select exists(
+        select *
+        from sites
+        where is_deleted = 0
+        )
     </select>
 
-    <select id="getSites" resultMap="siteResultMap">
+    <select id="existSite">
+        select exists(
+        select *
+        from sites
+        where id = #{id}
+        and is_deleted = 0
+        )
+    </select>
+
+    <select id="select" resultMap="siteResultMap">
         select *
         from sites
         where is_deleted = 0
     </select>
 
+    <insert id="add">
+        insert into sites(id, name, address, remark, is_deleted)
+        values(#{id}, #{name}, #{address}, #{remark}, 0)
+    </insert>
+
+    <update id="update">
+        update sites
+        set name = #{name}, address = #{address}, remark = #{remark}
+        where id = #{id}
+    </update>
+
+    <update id="delete">
+        update sites
+        set is_deleted = 1
+        where id = #{id}
+    </update>
 </mapper>
