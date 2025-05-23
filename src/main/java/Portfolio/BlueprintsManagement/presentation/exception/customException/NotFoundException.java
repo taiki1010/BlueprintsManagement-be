@@ -1,5 +1,11 @@
 package Portfolio.BlueprintsManagement.presentation.exception.customException;
 
-public class NotFound extends Exception {
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
+public class NotFoundException extends Exception {
+
     private String message;
 }
