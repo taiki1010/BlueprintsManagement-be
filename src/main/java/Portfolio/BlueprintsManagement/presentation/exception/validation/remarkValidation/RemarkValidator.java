@@ -1,6 +1,6 @@
 package Portfolio.BlueprintsManagement.presentation.exception.validation.remarkValidation;
 
-import Portfolio.BlueprintsManagement.presentation.exception.message.ErrorMessage;
+import Portfolio.BlueprintsManagement.presentation.dto.message.ErrorMessage;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

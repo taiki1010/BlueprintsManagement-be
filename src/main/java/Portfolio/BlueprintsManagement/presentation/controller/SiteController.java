@@ -2,9 +2,9 @@ package Portfolio.BlueprintsManagement.presentation.controller;
 
 import Portfolio.BlueprintsManagement.application.service.SiteService;
 import Portfolio.BlueprintsManagement.domain.model.Site;
+import Portfolio.BlueprintsManagement.presentation.dto.message.SuccessMessage;
 import Portfolio.BlueprintsManagement.presentation.dto.request.site.SiteRequest;
 import Portfolio.BlueprintsManagement.presentation.exception.customException.NotFoundException;
-import Portfolio.BlueprintsManagement.presentation.exception.message.SuccessMessage;
 import Portfolio.BlueprintsManagement.presentation.exception.validation.idValidation.ValidId;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
