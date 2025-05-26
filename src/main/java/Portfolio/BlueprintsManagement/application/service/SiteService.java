@@ -1,6 +1,7 @@
 package Portfolio.BlueprintsManagement.application.service;
 
-import Portfolio.BlueprintsManagement.domain.model.Site;
+import Portfolio.BlueprintsManagement.domain.model.site.SelectSiteReturnVal;
+import Portfolio.BlueprintsManagement.domain.model.site.Site;
 import Portfolio.BlueprintsManagement.domain.repository.ISiteRepository;
 import Portfolio.BlueprintsManagement.presentation.dto.message.ErrorMessage;
 import Portfolio.BlueprintsManagement.presentation.dto.request.site.SiteRequest;
@@ -17,15 +18,21 @@ public class SiteService {
 
     private final ISiteRepository siteRepository;
 
-    public List<Site> getSites() throws NotFoundException {
+    public List<SelectSiteReturnVal> getSites() throws NotFoundException {
         if (!siteRepository.existSites()) throw new NotFoundException(ErrorMessage.NOT_FOUND_SITES.getMessage());
         return siteRepository.getSites();
     }
 
+    public Site getSite(String id) throws NotFoundException {
+        if (!siteRepository.existSite(id)) throw new NotFoundException(ErrorMessage.NOT_FOUND_SITE_BY_ID.getMessage());
+        return siteRepository.getSite(id);
+    }
+
     @Transactional
-    public void addSite(SiteRequest request) {
+    public String addSite(SiteRequest request) {
         Site site = Site.formSite(request);
         siteRepository.addSite(site);
+        return site.getId();
     }
 
     @Transactional
