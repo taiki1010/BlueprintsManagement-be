@@ -3,7 +3,7 @@
 
 <mapper namespace="Portfolio.BlueprintsManagement.infrastructure.db.mapper.SiteMapper">
 
-    <resultMap id="siteResultMap" type="Portfolio.BlueprintsManagement.domain.model.Site">
+    <resultMap id="siteResultMap" type="Portfolio.BlueprintsManagement.domain.model.site.Site">
         <id column="id" property="id"/>
         <result column="name" property="name"/>
         <result column="address" property="address"/>
@@ -28,9 +28,15 @@
     </select>
 
     <select id="select" resultMap="siteResultMap">
-        select *
+        select id, name, address, remark
         from sites
         where is_deleted = 0
+    </select>
+
+    <select id="selectById" resultMap="siteResultMap">
+        select id, name, address, remark
+        from sites
+        where id = #{id} and is_deleted = 0
     </select>
 
     <insert id="add">

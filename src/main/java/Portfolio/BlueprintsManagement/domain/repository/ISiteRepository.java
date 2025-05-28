@@ -1,6 +1,6 @@
 package Portfolio.BlueprintsManagement.domain.repository;
 
-import Portfolio.BlueprintsManagement.domain.model.Site;
+import Portfolio.BlueprintsManagement.domain.model.site.Site;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -13,6 +13,8 @@ public interface ISiteRepository {
     boolean existSite(String id);
 
     List<Site> getSites();
+
+    Site getSite(String id);
 
     void addSite(Site site);
 

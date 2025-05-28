@@ -1,7 +1,7 @@
 package Portfolio.BlueprintsManagement.presentation.controller;
 
 import Portfolio.BlueprintsManagement.application.service.SiteService;
-import Portfolio.BlueprintsManagement.domain.model.Site;
+import Portfolio.BlueprintsManagement.domain.model.site.Site;
 import Portfolio.BlueprintsManagement.presentation.dto.message.SuccessMessage;
 import Portfolio.BlueprintsManagement.presentation.dto.request.site.SiteRequest;
 import Portfolio.BlueprintsManagement.presentation.exception.customException.NotFoundException;
@@ -19,6 +19,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/sites")
+@CrossOrigin(origins = "http://localhost:3000")
 public class SiteController {
 
     private final SiteService siteService;
@@ -28,11 +29,16 @@ public class SiteController {
         return siteService.getSites();
     }
 
+    @GetMapping("/{id}")
+    public Site searchSite(@PathVariable @ValidId String id) throws NotFoundException {
+        return siteService.getSite(id);
+    }
+
     @PostMapping
     public ResponseEntity<Map<String, String>> registerSite(@RequestBody @Valid SiteRequest request) {
-        siteService.addSite(request);
-        Map<String, String> message = Map.of("message", SuccessMessage.COMPLETE_REGISTER_SITE.getMessage());
-        return ResponseEntity.ok().body(message);
+        String id = siteService.addSite(request);
+        Map<String, String> response = Map.of("id", id);
+        return ResponseEntity.ok().body(response);
     }
 
     @PutMapping("/{id}")

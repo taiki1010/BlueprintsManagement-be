@@ -1,6 +1,6 @@
 package Portfolio.BlueprintsManagement.infrastructure.repository;
 
-import Portfolio.BlueprintsManagement.domain.model.Site;
+import Portfolio.BlueprintsManagement.domain.model.site.Site;
 import Portfolio.BlueprintsManagement.domain.repository.ISiteRepository;
 import Portfolio.BlueprintsManagement.infrastructure.db.mapper.SiteMapper;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +24,10 @@ public class SiteRepository implements ISiteRepository {
 
     public List<Site> getSites() {
         return siteMapper.select();
+    }
+
+    public Site getSite(String id) {
+        return siteMapper.selectById(id);
     }
 
     public void addSite(Site site) {

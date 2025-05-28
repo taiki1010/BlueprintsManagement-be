@@ -1,4 +1,4 @@
-package Portfolio.BlueprintsManagement.domain.model;
+package Portfolio.BlueprintsManagement.domain.model.site;
 
 import Portfolio.BlueprintsManagement.presentation.dto.request.site.SiteRequest;
 import lombok.AllArgsConstructor;

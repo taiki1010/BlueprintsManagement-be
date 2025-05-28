@@ -1,0 +1,15 @@
+services:
+  db:
+    platform: linux/x86_64
+    image: mysql:8.0.42-debian
+    container_name: blueprints_db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootroot
+      MYSQL_DATABASE: BlueprintsManagement
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./docker/db/data:/var/lib/mysql
+      - ./docker/db/sql:/docker-entrypoint-initdb.d
+      - ./docker/db/my.cnf:/etc/mysql/conf.d/my.cnf
+    ports:
+      - '3307:3306'
