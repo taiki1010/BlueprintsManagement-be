@@ -1,6 +1,5 @@
 package Portfolio.BlueprintsManagement.infrastructure.db.mapper;
 
-import Portfolio.BlueprintsManagement.domain.model.site.SelectSiteReturnVal;
 import Portfolio.BlueprintsManagement.domain.model.site.Site;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -13,7 +12,7 @@ public interface SiteMapper {
 
     boolean existSite(String id);
 
-    List<SelectSiteReturnVal> select();
+    List<Site> select();
 
     Site selectById(String id);
 

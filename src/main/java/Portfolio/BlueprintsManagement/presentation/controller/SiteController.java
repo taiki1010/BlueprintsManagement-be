@@ -1,7 +1,6 @@
 package Portfolio.BlueprintsManagement.presentation.controller;
 
 import Portfolio.BlueprintsManagement.application.service.SiteService;
-import Portfolio.BlueprintsManagement.domain.model.site.SelectSiteReturnVal;
 import Portfolio.BlueprintsManagement.domain.model.site.Site;
 import Portfolio.BlueprintsManagement.presentation.dto.message.SuccessMessage;
 import Portfolio.BlueprintsManagement.presentation.dto.request.site.SiteRequest;
@@ -26,7 +25,7 @@ public class SiteController {
     private final SiteService siteService;
 
     @GetMapping
-    public List<SelectSiteReturnVal> searchSites() throws NotFoundException {
+    public List<Site> searchSites() throws NotFoundException {
         return siteService.getSites();
     }
 

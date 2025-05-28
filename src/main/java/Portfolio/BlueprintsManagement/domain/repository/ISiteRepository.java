@@ -1,6 +1,5 @@
 package Portfolio.BlueprintsManagement.domain.repository;
 
-import Portfolio.BlueprintsManagement.domain.model.site.SelectSiteReturnVal;
 import Portfolio.BlueprintsManagement.domain.model.site.Site;
 import org.springframework.stereotype.Repository;
 
@@ -13,7 +12,7 @@ public interface ISiteRepository {
 
     boolean existSite(String id);
 
-    List<SelectSiteReturnVal> getSites();
+    List<Site> getSites();
 
     Site getSite(String id);
 

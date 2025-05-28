@@ -1,6 +1,5 @@
 package Portfolio.BlueprintsManagement.infrastructure.repository;
 
-import Portfolio.BlueprintsManagement.domain.model.site.SelectSiteReturnVal;
 import Portfolio.BlueprintsManagement.domain.model.site.Site;
 import Portfolio.BlueprintsManagement.domain.repository.ISiteRepository;
 import Portfolio.BlueprintsManagement.infrastructure.db.mapper.SiteMapper;
@@ -23,7 +22,7 @@ public class SiteRepository implements ISiteRepository {
         return siteMapper.existSite(id);
     }
 
-    public List<SelectSiteReturnVal> getSites() {
+    public List<Site> getSites() {
         return siteMapper.select();
     }
 

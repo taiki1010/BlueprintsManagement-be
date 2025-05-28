@@ -1,6 +1,5 @@
 package Portfolio.BlueprintsManagement.application.service;
 
-import Portfolio.BlueprintsManagement.domain.model.site.SelectSiteReturnVal;
 import Portfolio.BlueprintsManagement.domain.model.site.Site;
 import Portfolio.BlueprintsManagement.domain.repository.ISiteRepository;
 import Portfolio.BlueprintsManagement.presentation.dto.message.ErrorMessage;
@@ -18,7 +17,7 @@ public class SiteService {
 
     private final ISiteRepository siteRepository;
 
-    public List<SelectSiteReturnVal> getSites() throws NotFoundException {
+    public List<Site> getSites() throws NotFoundException {
         if (!siteRepository.existSites()) throw new NotFoundException(ErrorMessage.NOT_FOUND_SITES.getMessage());
         return siteRepository.getSites();
     }

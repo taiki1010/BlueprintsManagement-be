@@ -10,11 +10,6 @@
         <result column="remark" property="remark"/>
     </resultMap>
 
-    <resultMap id="selectSiteResultMap" type="Portfolio.BlueprintsManagement.domain.model.site.SelectSiteReturnVal">
-        <id column="id" property="id"/>
-        <result column="name" property="name"/>
-    </resultMap>
-
     <select id="existSites">
         select exists(
         select *
@@ -32,8 +27,8 @@
         )
     </select>
 
-    <select id="select" resultMap="selectSiteResultMap">
-        select id, name
+    <select id="select" resultMap="siteResultMap">
+        select id, name, address, remark
         from sites
         where is_deleted = 0
     </select>
