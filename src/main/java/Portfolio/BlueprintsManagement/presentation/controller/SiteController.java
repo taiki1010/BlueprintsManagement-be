@@ -1,6 +1,8 @@
 package Portfolio.BlueprintsManagement.presentation.controller;
 
+import Portfolio.BlueprintsManagement.application.service.BlueprintService;
 import Portfolio.BlueprintsManagement.application.service.SiteService;
+import Portfolio.BlueprintsManagement.domain.model.blueprint.Blueprint;
 import Portfolio.BlueprintsManagement.domain.model.site.Site;
 import Portfolio.BlueprintsManagement.presentation.dto.message.SuccessMessage;
 import Portfolio.BlueprintsManagement.presentation.dto.request.site.SiteRequest;
@@ -23,6 +25,7 @@ import java.util.Map;
 public class SiteController {
 
     private final SiteService siteService;
+    private final BlueprintService blueprintService;
 
     @GetMapping
     public List<Site> searchSites() throws NotFoundException {
@@ -32,6 +35,11 @@ public class SiteController {
     @GetMapping("/{id}")
     public Site searchSite(@PathVariable @ValidId String id) throws NotFoundException {
         return siteService.getSite(id);
+    }
+
+    @GetMapping("/{id}/blueprints")
+    public List<Blueprint> searchBlueprintsBySiteId(@PathVariable String id) throws NotFoundException {
+        return blueprintService.getBlueprintsBySiteId(id);
     }
 
     @PostMapping

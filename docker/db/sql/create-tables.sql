@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS sites (
 
 CREATE TABLE IF NOT EXISTS blueprints (
     id varchar(36) NOT NULL,
-    sites_id varchar(36) NOT NULL,
+    site_id varchar(36) NOT NULL,
     name varchar(20) NOT NULL,
     is_deleted tinyint(1) NOT NULL DEFAULT 0,
     PRIMARY KEY(id)
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS blueprints (
 
 CREATE TABLE IF NOT EXISTS architectural_drawings(
     id varchar(36) NOT NULL,
-    blueprints_id varchar(36) NOT NULL,
+    blueprint_id varchar(36) NOT NULL,
     created_at DATE,
     file_path TEXT,
     is_deleted tinyint(1) NOT NULL DEFAULT 0,
