@@ -21,6 +21,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/sites")
+@CrossOrigin("http://localhost:3000")
 public class SiteController {
 
     private final SiteService siteService;
