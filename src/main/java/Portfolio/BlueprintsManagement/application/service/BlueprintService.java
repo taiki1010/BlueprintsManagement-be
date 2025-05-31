@@ -8,6 +8,8 @@ import Portfolio.BlueprintsManagement.domain.repository.IBlueprintRepository;
 import Portfolio.BlueprintsManagement.presentation.dto.request.blueprint.BlueprintRequest;
 import Portfolio.BlueprintsManagement.presentation.exception.customException.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 @Service
@@ -39,16 +40,18 @@ public class BlueprintService {
     public String addBlueprint(BlueprintRequest request) throws IOException {
         MultipartFile imageFile = request.getBlueprint();
         String imageFileName = imageFile.getOriginalFilename();
-        Path uploadPath = Paths.get("upload/image/" + imageFileName);
+        Resource resource = new ClassPathResource("static/image");
+        Path imageDir = resource.getFile().toPath();
         byte[] content = imageFile.getBytes();
+        Path filePath = imageDir.resolve(imageFileName);
 
         Blueprint blueprint = Blueprint.formBlueprint(request);
-        ArchitecturalDrawing architecturalDrawing = ArchitecturalDrawing.formArchitecturalDrawing(request, blueprint.getId(), String.valueOf(uploadPath));
+        ArchitecturalDrawing architecturalDrawing = ArchitecturalDrawing.formArchitecturalDrawing(request, blueprint.getId(), "image/"+imageFileName);
 
         blueprintRepository.addBlueprint(blueprint);
         architecturalDrawingRepository.addArchitecturalDrawing(architecturalDrawing);
 
-        Files.write(uploadPath, content);
+        Files.write(filePath, content);
 
         return blueprint.getId();
     }

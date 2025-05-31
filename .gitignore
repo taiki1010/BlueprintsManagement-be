@@ -39,5 +39,3 @@ out/
 .DS_Store
 
 /docker/db/data
-
-upload/
