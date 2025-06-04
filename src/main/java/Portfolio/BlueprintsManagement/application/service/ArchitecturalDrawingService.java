@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -25,6 +26,7 @@ public class ArchitecturalDrawingService {
         return architecturalDrawingRepository.getArchitecturalDrawingsByBlueprintId(blueprintId);
     }
 
+    @Transactional
     public ArchitecturalDrawing addArchitecturalDrawing(ArchitecturalDrawingRequest request) throws IOException {
 
         MultipartFile imageFile = request.getArchitecturalDrawing();
@@ -35,7 +37,7 @@ public class ArchitecturalDrawingService {
         byte[] content = imageFile.getBytes();
         Path filePath = imageDir.resolve(imageFileName);
 
-        ArchitecturalDrawing architecturalDrawing = ArchitecturalDrawing.formArchitecturalDrawing(request,"image/" + imageFileName);
+        ArchitecturalDrawing architecturalDrawing = ArchitecturalDrawing.formArchitecturalDrawing(request, "image/" + imageFileName);
 
         architecturalDrawingRepository.addArchitecturalDrawing(architecturalDrawing);
 
