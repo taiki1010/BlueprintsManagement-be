@@ -1,0 +1,20 @@
+package com.portfolio.BlueprintsManagement.presentation.dto.request.blueprint;
+
+import com.portfolio.BlueprintsManagement.presentation.exception.validation.createdAtValidation.ValidCreatedAt;
+import com.portfolio.BlueprintsManagement.presentation.exception.validation.idValidation.ValidId;
+import lombok.Data;
+
+@Data
+public class DeleteBlueprintRequest {
+
+    @ValidId
+    private String id;
+
+    @ValidId
+    private String blueprintId;
+
+    @ValidCreatedAt
+    private String createdAt;
+
+    private String filePath;
+}

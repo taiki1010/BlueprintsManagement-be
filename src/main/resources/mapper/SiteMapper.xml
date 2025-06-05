@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="Portfolio.BlueprintsManagement.infrastructure.db.mapper.SiteMapper">
+<mapper namespace="com.portfolio.BlueprintsManagement.infrastructure.db.mapper.SiteMapper">
 
-    <resultMap id="siteResultMap" type="Portfolio.BlueprintsManagement.domain.model.site.Site">
+    <resultMap id="siteResultMap" type="com.portfolio.BlueprintsManagement.domain.model.site.Site">
         <id column="id" property="id"/>
         <result column="name" property="name"/>
         <result column="address" property="address"/>
