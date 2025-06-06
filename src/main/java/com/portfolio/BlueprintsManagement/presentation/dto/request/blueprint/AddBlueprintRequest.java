@@ -4,10 +4,12 @@ import com.portfolio.BlueprintsManagement.presentation.exception.validation.blue
 import com.portfolio.BlueprintsManagement.presentation.exception.validation.createdAtValidation.ValidCreatedAt;
 import com.portfolio.BlueprintsManagement.presentation.exception.validation.fileValidation.ValidFile;
 import com.portfolio.BlueprintsManagement.presentation.exception.validation.idValidation.ValidId;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
 @Data
+@AllArgsConstructor
 public class AddBlueprintRequest {
 
     @ValidId
@@ -20,6 +22,6 @@ public class AddBlueprintRequest {
     private String createdAt;
 
     @ValidFile
-    private MultipartFile blueprint;
+    private MultipartFile imageFile;
 
 }

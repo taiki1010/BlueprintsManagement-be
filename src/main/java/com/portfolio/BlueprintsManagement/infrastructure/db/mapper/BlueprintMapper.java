@@ -9,6 +9,10 @@ import java.util.List;
 @Mapper
 public interface BlueprintMapper {
 
+    boolean existBlueprintBySiteId(String siteId);
+
+    boolean existBlueprint(String id);
+
     List<Blueprint> selectBySiteId(String siteId);
 
     Blueprint select(String id);

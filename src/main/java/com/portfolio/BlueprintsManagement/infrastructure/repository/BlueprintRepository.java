@@ -15,6 +15,14 @@ public class BlueprintRepository implements IBlueprintRepository {
 
     private final BlueprintMapper blueprintMapper;
 
+    public boolean existBlueprintBySiteId(String siteId) {
+        return blueprintMapper.existBlueprintBySiteId(siteId);
+    }
+
+    public boolean existBlueprint(String id) {
+        return blueprintMapper.existBlueprint(id);
+    }
+
     public List<Blueprint> getBlueprintsBySiteId(String siteId) {
         return blueprintMapper.selectBySiteId(siteId);
     }

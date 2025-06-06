@@ -5,6 +5,7 @@ import com.portfolio.BlueprintsManagement.domain.model.blueprint.Blueprint;
 import com.portfolio.BlueprintsManagement.domain.model.blueprintInfo.BlueprintInfo;
 import com.portfolio.BlueprintsManagement.domain.repository.IArchitecturalDrawingRepository;
 import com.portfolio.BlueprintsManagement.domain.repository.IBlueprintRepository;
+import com.portfolio.BlueprintsManagement.presentation.dto.message.ErrorMessage;
 import com.portfolio.BlueprintsManagement.presentation.dto.request.blueprint.AddBlueprintRequest;
 import com.portfolio.BlueprintsManagement.presentation.dto.request.blueprint.DeleteBlueprintRequest;
 import com.portfolio.BlueprintsManagement.presentation.dto.request.blueprint.UpdateBlueprintRequest;
@@ -29,10 +30,16 @@ public class BlueprintService {
     private final IArchitecturalDrawingRepository architecturalDrawingRepository;
 
     public List<Blueprint> getBlueprintsBySiteId(String siteId) throws NotFoundException {
+        if (!blueprintRepository.existBlueprintBySiteId(siteId)) {
+            throw new NotFoundException(ErrorMessage.NOT_FOUND_BLUEPRINT_BY_SITE_ID.getMessage());
+        }
         return blueprintRepository.getBlueprintsBySiteId(siteId);
     }
 
     public BlueprintInfo getBlueprintInfo(String id) throws NotFoundException {
+        if (!blueprintRepository.existBlueprint(id)) {
+            throw new NotFoundException(ErrorMessage.NOT_FOUND_BLUEPRINT_BY_ID.getMessage());
+        }
         Blueprint blueprint = blueprintRepository.getBlueprint(id);
         List<ArchitecturalDrawing> architecturalDrawingList = architecturalDrawingRepository.getArchitecturalDrawingsByBlueprintId(id);
         return new BlueprintInfo(blueprint, architecturalDrawingList);
@@ -40,7 +47,7 @@ public class BlueprintService {
 
     @Transactional
     public String addBlueprint(AddBlueprintRequest request) throws IOException {
-        MultipartFile imageFile = request.getBlueprint();
+        MultipartFile imageFile = request.getImageFile();
         String imageFileName = imageFile.getOriginalFilename();
         Resource resource = new ClassPathResource("static/image");
         Path imageDir = resource.getFile().toPath();
@@ -61,7 +68,6 @@ public class BlueprintService {
     public void updateBlueprint(UpdateBlueprintRequest request) {
         blueprintRepository.updateBlueprint(request);
     }
-
 
     @Transactional
     public boolean deleteBlueprint(DeleteBlueprintRequest request) {
