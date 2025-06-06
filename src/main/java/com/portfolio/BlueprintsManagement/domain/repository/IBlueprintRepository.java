@@ -9,6 +9,10 @@ import java.util.List;
 @Repository
 public interface IBlueprintRepository {
 
+    boolean existBlueprintBySiteId(String siteId);
+
+    boolean existBlueprint(String id);
+
     List<Blueprint> getBlueprintsBySiteId(String siteId);
 
     Blueprint getBlueprint(String id);
