@@ -1,4 +1,4 @@
-package Portfolio.BlueprintsManagement;
+package com.portfolio.BlueprintsManagement;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
