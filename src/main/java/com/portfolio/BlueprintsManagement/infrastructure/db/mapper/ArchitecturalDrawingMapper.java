@@ -8,11 +8,13 @@ import java.util.List;
 @Mapper
 public interface ArchitecturalDrawingMapper {
 
+    boolean existArchitecturalDrawingByBlueprintId(String blueprintId);
+
+    boolean existArchitecturalDrawing(String id);
+
     List<ArchitecturalDrawing> selectByBlueprintId(String blueprintId);
 
     void add(ArchitecturalDrawing architecturalDrawing);
-
-    boolean existArchitecturalDrawingByBlueprintId(String blueprintId);
 
     void delete(String id);
 }

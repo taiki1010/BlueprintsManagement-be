@@ -17,6 +17,10 @@ public class SiteService {
 
     private final ISiteRepository siteRepository;
 
+    public boolean checkExistSites() {
+        return siteRepository.existSites();
+    }
+
     public List<Site> getSites() throws NotFoundException {
         if (!siteRepository.existSites()) throw new NotFoundException(ErrorMessage.NOT_FOUND_SITES.getMessage());
         return siteRepository.getSites();

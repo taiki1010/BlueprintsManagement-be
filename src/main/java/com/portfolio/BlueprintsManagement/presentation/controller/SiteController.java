@@ -26,6 +26,15 @@ public class SiteController {
     private final SiteService siteService;
     private final BlueprintService blueprintService;
 
+    @RequestMapping(method = RequestMethod.HEAD)
+    public ResponseEntity<Void> checkExistSites() {
+        if(siteService.checkExistSites()) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @GetMapping
     public List<Site> searchSites() throws NotFoundException {
         return siteService.getSites();

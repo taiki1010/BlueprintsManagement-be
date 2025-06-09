@@ -10,16 +10,7 @@ public class CreatedAtValidator implements ConstraintValidator<ValidCreatedAt, S
     @Override
     public boolean isValid(String createdAt, ConstraintValidatorContext context) {
         context.disableDefaultConstraintViolation();
-        return isValidCreatedAtFormat(createdAt, context) && isValidBlank(createdAt, context);
-    }
-
-    public boolean isValidCreatedAtFormat(String createdAt, ConstraintValidatorContext context) {
-        final boolean matchesDateFormat = createdAt.matches("^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$");
-        if (!matchesDateFormat) {
-            context.buildConstraintViolationWithTemplate(ErrorMessage.CREATED_AT_MUST_MATCH_FORMAT.getMessage())
-                    .addConstraintViolation();
-        }
-        return matchesDateFormat;
+        return isValidBlank(createdAt, context) && isValidCreatedAtFormat(createdAt, context);
     }
 
     public boolean isValidBlank(String createdAt, ConstraintValidatorContext context) {
@@ -29,5 +20,14 @@ public class CreatedAtValidator implements ConstraintValidator<ValidCreatedAt, S
                     .addConstraintViolation();
         }
         return !isBlank;
+    }
+
+    public boolean isValidCreatedAtFormat(String createdAt, ConstraintValidatorContext context) {
+        final boolean matchesDateFormat = createdAt.matches("^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$");
+        if (!matchesDateFormat) {
+            context.buildConstraintViolationWithTemplate(ErrorMessage.CREATED_AT_MUST_MATCH_FORMAT.getMessage())
+                    .addConstraintViolation();
+        }
+        return matchesDateFormat;
     }
 }

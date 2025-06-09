@@ -9,6 +9,25 @@
         <result column="file_path" property="filePath"/>
     </resultMap>
 
+
+    <select id="existArchitecturalDrawingByBlueprintId">
+        select exists(
+        select *
+        from architectural_drawings
+        where blueprint_id = #{blueprintId}
+        and is_deleted = 0
+        )
+    </select>
+
+    <select id="existArchitecturalDrawing">
+        select exists(
+        select *
+        from architectural_drawings
+        where id = #{id}
+        and is_deleted = 0
+        )
+    </select>
+
     <select id="selectByBlueprintId" resultMap="blueprintResultMap">
         select id, blueprint_id, created_at, file_path
         from architectural_drawings
@@ -19,15 +38,6 @@
         insert into architectural_drawings(id, blueprint_id, created_at, file_path, is_deleted)
         values(#{id}, #{blueprintId}, #{createdAt}, #{filePath}, 0)
     </insert>
-
-    <select id="existArchitecturalDrawingByBlueprintId">
-        select exists(
-        select *
-        from architectural_drawings
-        where blueprint_id = #{blueprintId}
-        and is_deleted = 0
-        )
-    </select>
 
     <update id="delete">
         update architectural_drawings
