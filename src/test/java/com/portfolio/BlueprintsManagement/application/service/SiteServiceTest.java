@@ -5,7 +5,6 @@ import com.portfolio.BlueprintsManagement.domain.repository.ISiteRepository;
 import com.portfolio.BlueprintsManagement.presentation.dto.request.site.SiteRequest;
 import com.portfolio.BlueprintsManagement.presentation.exception.customException.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,9 +14,9 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
-import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -39,7 +38,7 @@ class SiteServiceTest {
     }
 
     public void createInitialSampleData() {
-        id = UUID.randomUUID().toString();
+        id = "00000000-0000-1000-8000-000000000001";
         site = new Site(id, "佐藤邸", "東京都表参道", "");
         siteRequest = new SiteRequest("佐藤邸", "東京都表参道", "");
     }
@@ -96,20 +95,17 @@ class SiteServiceTest {
         }
     }
 
-    // FIXME staticメソッドのモック化をmockito-core、mockito-inlineで作成しようとしたのですが、うまくいかずご確認よろしくお願いします。
-    @Disabled
     @Test
     void 現場情報の登録＿リポジトリが実行されuuidが返却されること() {
-//
-//        try(MockedStatic<Site> mock = Mockito.mockStatic(Site.class)) {
-//            String expected = id;
-//            when(mock.formData(siteRequest)).thenReturn(site);
-//
-//            String actual = sut.addSite(siteRequest);
-//
-//            verify(siteRepository, times(1)).addSite(site);
-//            assertEquals(expected, actual);
-//      }
+        try (MockedStatic<Site> mock = Mockito.mockStatic(Site.class)) {
+            String expected = id;
+            mock.when(() -> Site.formSite(siteRequest)).thenReturn(site);
+
+            String actual = sut.addSite(siteRequest);
+
+            verify(siteRepository, times(1)).addSite(site);
+            assertEquals(expected, actual);
+        }
     }
 
     @Nested
@@ -157,7 +153,4 @@ class SiteServiceTest {
             assertEquals(expected, actual);
         }
     }
-
-
-
 }

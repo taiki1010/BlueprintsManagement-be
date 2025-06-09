@@ -5,18 +5,26 @@ import com.portfolio.BlueprintsManagement.domain.model.blueprint.Blueprint;
 import com.portfolio.BlueprintsManagement.domain.model.blueprintInfo.BlueprintInfo;
 import com.portfolio.BlueprintsManagement.domain.repository.IArchitecturalDrawingRepository;
 import com.portfolio.BlueprintsManagement.domain.repository.IBlueprintRepository;
+import com.portfolio.BlueprintsManagement.presentation.dto.request.blueprint.AddBlueprintRequest;
 import com.portfolio.BlueprintsManagement.presentation.dto.request.blueprint.DeleteBlueprintRequest;
 import com.portfolio.BlueprintsManagement.presentation.dto.request.blueprint.UpdateBlueprintRequest;
 import com.portfolio.BlueprintsManagement.presentation.exception.customException.NotFoundException;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.mock.web.MockMultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -37,19 +45,38 @@ class BlueprintServiceTest {
     private String architecturalDrawingId;
     private Blueprint blueprint;
     private ArchitecturalDrawing architecturalDrawing;
+    private byte[] dummyImageFile;
+
+    private AddBlueprintRequest request;
+    private MockedStatic<Blueprint> blueprintMockedStatic;
+    private MockedStatic<ArchitecturalDrawing> architecturalDrawingMockedStatic;
 
     @BeforeEach
     public void before() {
         sut = new BlueprintService(blueprintRepository, architecturalDrawingRepository);
         createInitialSampleData();
+        dummyImageFile = new byte[100];
+        MockMultipartFile mockImage = new MockMultipartFile("imageFile", "dummy.png", "image/png", dummyImageFile);
+        request = new AddBlueprintRequest(siteId, "平面図", "2025-01-01", mockImage);
+
+        blueprintMockedStatic = mockStatic(Blueprint.class);
+        blueprintMockedStatic.when(() -> Blueprint.formBlueprint(request)).thenReturn(blueprint);
+        architecturalDrawingMockedStatic = mockStatic(ArchitecturalDrawing.class);
+        architecturalDrawingMockedStatic.when(() -> ArchitecturalDrawing.formArchitecturalDrawingFromBlueprintRequest(request, blueprintId, "image/dummy.png")).thenReturn(architecturalDrawing);
+    }
+
+    @AfterEach
+    public void after() {
+        blueprintMockedStatic.close();
+        architecturalDrawingMockedStatic.close();
     }
 
     public void createInitialSampleData() {
-        blueprintId = UUID.randomUUID().toString();
-        siteId = UUID.randomUUID().toString();
+        blueprintId = "10000000-0000-1000-8000-000000000001";
+        siteId = "00000000-0000-1000-8000-000000000001";
         blueprint = new Blueprint(blueprintId, siteId, "平面図");
 
-        architecturalDrawingId = UUID.randomUUID().toString();
+        architecturalDrawingId = "11000000-0000-1000-8000-000000000001";
         architecturalDrawing = new ArchitecturalDrawing(architecturalDrawingId, blueprintId, "2025-01-01", "static/image/hoge.png");
     }
 
@@ -72,7 +99,7 @@ class BlueprintServiceTest {
             String expected = "現場idに該当する図面情報が存在しません";
 
             NotFoundException result = assertThrows(NotFoundException.class, () -> sut.getBlueprintsBySiteId(siteId));
-            String actual = result.getMessage();;
+            String actual = result.getMessage();
 
             assertEquals(expected, actual);
         }
@@ -104,10 +131,21 @@ class BlueprintServiceTest {
         }
     }
 
-    // TODO ファイル処理のテスト実装方法を調べるため一時保留
     @Test
-    void 図面の追加 () {
+    void 図面の追加＿リポジトリが実行されること() throws IOException {
+        String dummyFile = "dummy.png";
+        Resource resource = new ClassPathResource("static/image");
+        Path imageDir = resource.getFile().toPath();
+        Path filePath = imageDir.resolve(dummyFile);
 
+        String actual = sut.addBlueprint(request);
+
+        verify(blueprintRepository, times(1)).addBlueprint(blueprint);
+        verify(architecturalDrawingRepository, times(1)).addArchitecturalDrawing(architecturalDrawing);
+
+        assertEquals(blueprintId, actual);
+
+        Files.delete(filePath);
     }
 
     @Test
