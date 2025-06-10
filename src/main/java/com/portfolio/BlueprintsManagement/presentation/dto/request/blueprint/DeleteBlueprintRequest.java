@@ -10,7 +10,7 @@ import lombok.Data;
 public class DeleteBlueprintRequest {
 
     @ValidId
-    private String siteId;
+    private String id;
 
     @ValidId
     private String blueprintId;

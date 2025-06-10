@@ -389,7 +389,7 @@ class BlueprintControllerTest {
                 @ParameterizedTest
                 @ValueSource(strings = {"00000000-0000-1000-8000-000000000000", "ffffffff-ffff-5fff-bfff-ffffffffffff"})
                 void idがUUID形式に適している場合正常に処理が実行されること(String id) {
-                    deleteBlueprintRequest.setSiteId(id);
+                    deleteBlueprintRequest.setId(id);
                     Set<ConstraintViolation<DeleteBlueprintRequest>> violations = validator.validate(deleteBlueprintRequest);
 
                     assertEquals(0, violations.size());
@@ -398,7 +398,7 @@ class BlueprintControllerTest {
                 @ParameterizedTest
                 @ValueSource(strings = {"-1", "1", "abc", ""})
                 void idがUUID形式に適していない場合バリデーションチェックされること(String id) {
-                    deleteBlueprintRequest.setSiteId(id);
+                    deleteBlueprintRequest.setId(id);
                     Set<ConstraintViolation<DeleteBlueprintRequest>> violations = validator.validate(deleteBlueprintRequest);
                     String actual = violations.iterator().next().getMessage();
 
