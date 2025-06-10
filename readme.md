@@ -23,6 +23,7 @@
 バックエンド: <br>
 ![](https://img.shields.io/badge/Java_21-red)
 ![](https://img.shields.io/badge/Spring_Boot_3.4.5-green)
+![](https://img.shields.io/badge/JUnit5-yellow)
 ![](https://img.shields.io/badge/MyBatis_3.0.4-blue)
 ![](https://img.shields.io/badge/Gradle-black)
 
@@ -36,6 +37,24 @@
 インフラ:      
 ![](https://img.shields.io/badge/MySQL-green)
 ![](https://img.shields.io/badge/Docker-blue)
+
+## APIエンドポイント一覧
+
+| HTTPメソッド | エンドポイント | 機能 |
+| ---- | ---- | ---- |
+| HEAD | /sites | 現場情報の存在を確認 |
+| GET | /sites | 現場情報一覧の取得 |
+| GET | /sites/{siteId} | 現場情報一件の取得(ID指定) |
+| GET | /sites | 現場情報一覧の取得 |
+| GET | /sites/{siteId}/blueprints | 現場IDに該当する図面情報一覧の取得 |
+| POST | /sites | 現場情報の追加 |
+| PUT | /sites/{siteId} | 現場情報の更新 |
+| DELETE | /sites/{siteId} | 現場情報の削除 |
+| GET | /blueprints/{blueprintId} | 図面情報の取得(ID指定) |
+| POST | /blueprints | 図面情報の追加 |
+| PUT | /blueprints | 図面情報の更新 |
+| DELETE | /blueprints | 図面情報の削除 |
+| POST | /architecturalDrawings | 図面画像情報の追加 |
 
 ## ER図
 
@@ -82,10 +101,13 @@ JUnit5による単体テストを実装しています。
 ## 工夫したところ
 
 - 日付を選択することで図面画像が切り替えられること    
-  建築図面はお客様の要望により変更が加えられることが多く、過去の図面情報も閲覧できるように、日付を切り替えることで過去の画像が表示できるように設計しています。
+  建築図面はお客様の要望や設計の修正などにより変更が加えられることが多々あります。過去の図面情報も閲覧できるように、日付を切り替えることで過去の画像が表示できるように設計しています。
 
 - UIをシンプルで直感的にわかるようにすること  
   ユーザーが扱いやすいように、直感的でわかりやすいUIで構築することを意識しました。現在どこのページを閲覧しているかわかるようにタブの色を変更したり、ボタンの表示をわかりやすくしたりしました。
+
+- 閲覧用のURLを作成したこと  
+  管理している図面情報を現場の職人にすぐに渡せるように閲覧用URLを発行できるように設計しました。図面の変更があってもオンライン上で即座に職人とすり合わせができるようにしました。
 
 ## 苦労したところ
 
