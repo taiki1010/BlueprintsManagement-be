@@ -76,7 +76,8 @@ JUnit5による単体テストを実装しています。
 - Controller層：バリデーションチェックが行われ適切なAPIが返却されることを保証
 - Service層：ビジネスロジックに適したデータが返却されることを保証
 - Repository層：h2を導入しDBに対してSQLが正常に作動することを保証
-  ![テスト結果.png](../../Desktop/%E3%83%86%E3%82%B9%E3%83%88%E7%B5%90%E6%9E%9C.png)
+![テスト結果](https://github.com/user-attachments/assets/d4b734db-1fea-4646-826a-7e28be4748b1)
+
 
 ## 工夫したところ
 
