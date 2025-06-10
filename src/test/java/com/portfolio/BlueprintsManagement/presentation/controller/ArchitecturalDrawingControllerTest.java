@@ -129,6 +129,17 @@ class ArchitecturalDrawingControllerTest {
                     assertEquals(1, violations.size());
                     assertEquals("入力欄が空です", actual);
                 }
+
+                @Test
+                void 作成日がnullの場合にバリデーションチェックがかかること() {
+                    String createdAt = null;
+                    architecturalDrawingRequest.setCreatedAt(createdAt);
+                    Set<ConstraintViolation<ArchitecturalDrawingRequest>> violations = validator.validate(architecturalDrawingRequest);
+                    String actual = violations.iterator().next().getMessage();
+
+                    assertEquals(1, violations.size());
+                    assertEquals("入力欄が空です", actual);
+                }
             }
 
             @Nested

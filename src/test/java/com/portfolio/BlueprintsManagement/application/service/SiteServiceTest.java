@@ -15,8 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -41,6 +40,17 @@ class SiteServiceTest {
         id = "00000000-0000-1000-8000-000000000001";
         site = new Site(id, "佐藤邸", "東京都表参道", "");
         siteRequest = new SiteRequest("佐藤邸", "東京都表参道", "");
+    }
+
+    @Test
+    void 現場の存在確認＿リポジトリが実行され真理値が返却されること() {
+        when(siteRepository.existSites()).thenReturn(true);
+
+        Boolean actual = sut.checkExistSites();
+
+        verify(siteRepository, times(1)).existSites();
+        assertTrue(actual);
+
     }
 
     @Nested

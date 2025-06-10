@@ -101,6 +101,18 @@ class SiteControllerTest {
     }
 
     @Test
+    void 現場の一件検索＿サービスが実行され現場情報が一件返却されること() throws Exception {
+        when(siteService.getSite(id)).thenReturn(site);
+        String expectedJson = mapper.writeValueAsString(site);
+
+        mockMvc.perform(get("/sites/" + id))
+                .andExpect(status().isOk())
+                .andExpect(content().json(expectedJson));
+
+        verify(siteService, times(1)).getSite(id);
+    }
+
+    @Test
     void 図面一覧の検索＿サービスが実行され現場idに該当する図面一覧が返却されること() throws Exception {
         List<Blueprint> blueprintList = List.of(blueprint);
         when(blueprintService.getBlueprintsBySiteId(id)).thenReturn(blueprintList);
