@@ -17,13 +17,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -133,19 +129,11 @@ class BlueprintServiceTest {
 
     @Test
     void 図面の追加＿リポジトリが実行されること() throws IOException {
-        String dummyFile = "dummy.png";
-        Resource resource = new ClassPathResource("static/image");
-        Path imageDir = resource.getFile().toPath();
-        Path filePath = imageDir.resolve(dummyFile);
-
         String actual = sut.addBlueprint(request);
 
         verify(blueprintRepository, times(1)).addBlueprint(blueprint);
         verify(architecturalDrawingRepository, times(1)).addArchitecturalDrawing(architecturalDrawing);
-
         assertEquals(blueprintId, actual);
-
-        Files.delete(filePath);
     }
 
     @Test
