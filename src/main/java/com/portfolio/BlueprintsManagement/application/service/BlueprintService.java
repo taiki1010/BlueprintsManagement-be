@@ -72,7 +72,7 @@ public class BlueprintService {
 
     @Transactional
     public boolean deleteBlueprint(DeleteBlueprintRequest request) {
-        String architecturalDrawingId = request.getSiteId();
+        String architecturalDrawingId = request.getId();
         String blueprintId = request.getBlueprintId();
         architecturalDrawingRepository.deleteArchitecturalDrawing(architecturalDrawingId);
         if (architecturalDrawingRepository.existArchitecturalDrawingByBlueprintId(blueprintId)) {
