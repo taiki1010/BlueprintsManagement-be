@@ -8,6 +8,24 @@
         <result column="name" property="name"/>
     </resultMap>
 
+    <select id="existBlueprintBySiteId">
+        select exists(
+        select *
+        from blueprints
+        where site_id = #{siteId}
+        and is_deleted = 0
+        )
+    </select>
+
+    <select id="existBlueprint">
+        select exists(
+        select *
+        from blueprints
+        where id = #{id}
+        and is_deleted = 0
+        )
+    </select>
+
     <select id="selectBySiteId" resultMap="blueprintResultMap">
         select *
         from blueprints

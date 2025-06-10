@@ -20,11 +20,6 @@ public class ArchitecturalDrawingController {
 
     private final ArchitecturalDrawingService architecturalDrawingService;
 
-    @GetMapping("/{blueprintId}")
-    public List<ArchitecturalDrawing> searchArchitecturalDrawingsByBlueprintId(@PathVariable String blueprintId) throws NotFoundException {
-        return architecturalDrawingService.getArchitecturalDrawings(blueprintId);
-    }
-
     @PostMapping
     public ArchitecturalDrawing addArchitecturalDrawing(@ModelAttribute @Valid ArchitecturalDrawingRequest architecturalDrawingRequest) throws IOException {
         return architecturalDrawingService.addArchitecturalDrawing(architecturalDrawingRequest);

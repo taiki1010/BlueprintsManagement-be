@@ -3,11 +3,13 @@ package com.portfolio.BlueprintsManagement.domain.model.site;
 import com.portfolio.BlueprintsManagement.presentation.dto.request.site.SiteRequest;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class Site {
 
     private String id;
