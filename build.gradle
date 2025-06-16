@@ -50,6 +50,12 @@ dependencies {
     // Jackson Java8 module
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 
+    // aws
+    implementation platform('software.amazon.awssdk:bom:2.31.63')
+    implementation 'software.amazon.awssdk:s3'
+    implementation 'software.amazon.awssdk:sso'
+    implementation 'software.amazon.awssdk:ssooidc'
+
     // SpringBoot Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
