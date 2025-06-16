@@ -85,7 +85,11 @@ public class BlueprintService {
         PutObjectRequest objectRequest = PutObjectRequest.builder()
                 .bucket(bucketName).key(filePath).build();
 
-        s3.putObject(objectRequest, RequestBody.fromBytes(content));
+        try {
+            s3.putObject(objectRequest, RequestBody.fromBytes(content));
+        } catch (Exception e) {
+            throw new RuntimeException("ファイルのS3へのアップロードに失敗しました", e);
+        }
 
 //      Files.write(filePath, content);
         return blueprint.getId();
