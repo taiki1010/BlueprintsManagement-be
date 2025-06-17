@@ -12,9 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class ArchitecturalDrawingRequest {
 
     @ValidId
-    private String siteId;
-
-    @ValidId
     private String BlueprintId;
 
     @ValidCreatedAt
