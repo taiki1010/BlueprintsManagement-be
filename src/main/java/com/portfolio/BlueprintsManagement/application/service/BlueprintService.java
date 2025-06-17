@@ -11,6 +11,7 @@ import com.portfolio.BlueprintsManagement.presentation.dto.request.blueprint.Del
 import com.portfolio.BlueprintsManagement.presentation.dto.request.blueprint.UpdateBlueprintRequest;
 import com.portfolio.BlueprintsManagement.presentation.exception.customException.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,10 +39,10 @@ public class BlueprintService {
 //    AwsCredentials credentials = AwsBasicCredentials.create(accessKey, secretKey);
 //    AwsCredentialsProvider credentialsProvider = StaticCredentialsProvider.create(credentials);
 
-    private String bucketName = "blueprints-management-bucket";
+    @Value("${s3.bucket.name}")
+    private String bucketName;
     Region region = Region.AP_NORTHEAST_1;
     S3Client s3 = S3Client.builder().region(region).build();
-
 
     public List<Blueprint> getBlueprintsBySiteId(String siteId) throws NotFoundException {
         if (!blueprintRepository.existBlueprintBySiteId(siteId)) {
@@ -75,7 +76,6 @@ public class BlueprintService {
 
         blueprintRepository.addBlueprint(blueprint);
         architecturalDrawingRepository.addArchitecturalDrawing(architecturalDrawing);
-
 
         PutObjectRequest objectRequest = PutObjectRequest.builder()
                 .bucket(bucketName).key(filePath).build();
