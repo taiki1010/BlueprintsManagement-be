@@ -11,14 +11,9 @@ import com.portfolio.BlueprintsManagement.presentation.dto.request.blueprint.Del
 import com.portfolio.BlueprintsManagement.presentation.dto.request.blueprint.UpdateBlueprintRequest;
 import com.portfolio.BlueprintsManagement.presentation.exception.customException.NotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
-import software.amazon.awssdk.auth.credentials.AwsCredentials;
-import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
-import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -34,18 +29,18 @@ public class BlueprintService {
     private final IBlueprintRepository blueprintRepository;
     private final IArchitecturalDrawingRepository architecturalDrawingRepository;
 
-    @Value("${cloud.aws.credentials.access-key}")
-    private String accessKey;
-
-    @Value("${cloud.aws.credentials.secret-key}")
-    private String secretKey;
-
-    AwsCredentials credentials = AwsBasicCredentials.create(accessKey, secretKey);
-    AwsCredentialsProvider credentialsProvider = StaticCredentialsProvider.create(credentials);
+//    @Value("${cloud.aws.credentials.accessKey}")
+//    private String accessKey;
+//
+//    @Value("${cloud.aws.credentials.secretKey}")
+//    private String secretKey;
+//
+//    AwsCredentials credentials = AwsBasicCredentials.create(accessKey, secretKey);
+//    AwsCredentialsProvider credentialsProvider = StaticCredentialsProvider.create(credentials);
 
     private String bucketName = "blueprints-management-bucket";
     Region region = Region.AP_NORTHEAST_1;
-    S3Client s3 = S3Client.builder().region(region).credentialsProvider(credentialsProvider).build();
+    S3Client s3 = S3Client.builder().region(region).build();
 
 
     public List<Blueprint> getBlueprintsBySiteId(String siteId) throws NotFoundException {
