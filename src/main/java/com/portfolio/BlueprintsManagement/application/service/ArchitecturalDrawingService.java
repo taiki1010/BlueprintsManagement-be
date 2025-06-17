@@ -35,7 +35,7 @@ public class ArchitecturalDrawingService {
 //        Path imageDir = resource.getFile().toPath();
         byte[] content = imageFile.getBytes();
 //        Path filePath = imageDir.resolve(Objects.requireNonNull(imageFileName));
-        String filePath = request.getSiteId() + "/" + request.getBlueprintId() + "/" + imageFileName;
+        String filePath = request.getBlueprintId() + "/" + imageFileName;
 
         ArchitecturalDrawing architecturalDrawing = ArchitecturalDrawing.formArchitecturalDrawing(request, filePath);
 

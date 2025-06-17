@@ -70,7 +70,7 @@ public class BlueprintService {
 //        Path filePath = imageDir.resolve(Objects.requireNonNull(imageFileName));
 
         Blueprint blueprint = Blueprint.formBlueprint(request);
-        String filePath = blueprint.getSiteId() + "/" + blueprint.getId() + "/" + imageFileName;
+        String filePath = blueprint.getId() + "/" + imageFileName;
 
         ArchitecturalDrawing architecturalDrawing = ArchitecturalDrawing.formArchitecturalDrawingFromBlueprintRequest(request, blueprint.getId(), filePath);
 
