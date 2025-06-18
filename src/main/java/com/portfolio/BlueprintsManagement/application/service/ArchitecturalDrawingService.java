@@ -2,7 +2,9 @@ package com.portfolio.BlueprintsManagement.application.service;
 
 import com.portfolio.BlueprintsManagement.domain.model.architecturalDrawing.ArchitecturalDrawing;
 import com.portfolio.BlueprintsManagement.domain.repository.IArchitecturalDrawingRepository;
+import com.portfolio.BlueprintsManagement.presentation.dto.message.ErrorMessage;
 import com.portfolio.BlueprintsManagement.presentation.dto.request.architecturalDrawing.ArchitecturalDrawingRequest;
+import com.portfolio.BlueprintsManagement.presentation.exception.customException.FailedToPutObjectException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -34,7 +36,7 @@ public class ArchitecturalDrawingService {
     }
 
     @Transactional
-    public ArchitecturalDrawing addArchitecturalDrawing(ArchitecturalDrawingRequest request) throws IOException {
+    public ArchitecturalDrawing addArchitecturalDrawing(ArchitecturalDrawingRequest request) throws IOException, FailedToPutObjectException {
 
         MultipartFile imageFile = request.getImageFile();
         String imageFileName = imageFile.getOriginalFilename();
@@ -51,7 +53,7 @@ public class ArchitecturalDrawingService {
         try {
             s3.putObject(objectRequest, RequestBody.fromBytes(content));
         } catch (Exception e) {
-            throw new RuntimeException("ファイルのS3へのアップロードに失敗しました", e);
+            throw new FailedToPutObjectException(ErrorMessage.FAILED_TO_PUT_OBJECT.getMessage());
         }
 
         return architecturalDrawing;

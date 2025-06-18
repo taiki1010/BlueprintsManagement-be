@@ -1,5 +1,6 @@
 package com.portfolio.BlueprintsManagement.presentation.exception;
 
+import com.portfolio.BlueprintsManagement.presentation.exception.customException.FailedToPutObjectException;
 import com.portfolio.BlueprintsManagement.presentation.exception.customException.NotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
@@ -34,6 +35,12 @@ public class GlobalExceptionHandler {
         Map<String, String> error = new HashMap<>();
         ex.getBindingResult().getAllErrors().forEach((e) -> error.put("message", e.getDefaultMessage()));
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(FailedToPutObjectException.class)
+    public ResponseEntity<Map<String, String>> handleFailedToPutObjectException(FailedToPutObjectException ex) {
+        Map<String, String> error = Map.of("message", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
 }

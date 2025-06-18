@@ -18,7 +18,8 @@ public enum ErrorMessage {
     CREATED_AT_MUST_MATCH_FORMAT("入力された日付の形式が正しくありません"),
     NOT_FILE_SIZE_ACCEPTABLE("ファイルサイズは5MBまでにしてください"),
     NOT_FILE_TYPE_ACCEPTABLE("画像ファイルを選択してください"),
-    INPUT_FIELD_IS_BLANK("入力欄が空です");
+    INPUT_FIELD_IS_BLANK("入力欄が空です"),
+    FAILED_TO_PUT_OBJECT("ファイルのアップロードに失敗しました");
 
     private final String message;
 }
