@@ -47,7 +47,7 @@ class ArchitecturalDrawingControllerTest {
         this.mapper = new ObjectMapper();
         byte[] dummyImageBytes = new byte[100];
         mockImage = new MockMultipartFile("imageFile", "image.png", "image/png", dummyImageBytes);
-        architecturalDrawingRequest = new ArchitecturalDrawingRequest(UUID.randomUUID().toString(), "2025-01-01", mockImage);
+        architecturalDrawingRequest = new ArchitecturalDrawingRequest("10000000-0000-1000-8000-000000000001", "2025-01-01", mockImage);
     }
 
     @Test
@@ -58,6 +58,7 @@ class ArchitecturalDrawingControllerTest {
 
         mockMvc.perform(multipart("/architecturalDrawings")
                         .file(mockImage)
+                        .param("siteId", UUID.randomUUID().toString())
                         .param("BlueprintId", UUID.randomUUID().toString())
                         .param("createdAt", "2025-01-01"))
                 .andExpect(status().isOk())
