@@ -9,6 +9,7 @@ import com.portfolio.BlueprintsManagement.presentation.dto.message.ErrorMessage;
 import com.portfolio.BlueprintsManagement.presentation.dto.request.blueprint.AddBlueprintRequest;
 import com.portfolio.BlueprintsManagement.presentation.dto.request.blueprint.DeleteBlueprintRequest;
 import com.portfolio.BlueprintsManagement.presentation.dto.request.blueprint.UpdateBlueprintRequest;
+import com.portfolio.BlueprintsManagement.presentation.exception.customException.FailedToPutObjectException;
 import com.portfolio.BlueprintsManagement.presentation.exception.customException.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -80,7 +81,7 @@ public class BlueprintService {
         try {
             s3.putObject(objectRequest, RequestBody.fromBytes(content));
         } catch (Exception e) {
-            throw new RuntimeException("ファイルのS3へのアップロードに失敗しました", e);
+            throw new FailedToPutObjectException(ErrorMessage.FAILED_TO_PUT_OBJECT.getMessage());
         }
 
         return blueprint.getId();
