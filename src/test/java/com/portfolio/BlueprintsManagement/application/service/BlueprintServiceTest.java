@@ -5,9 +5,11 @@ import com.portfolio.BlueprintsManagement.domain.model.blueprint.Blueprint;
 import com.portfolio.BlueprintsManagement.domain.model.blueprintInfo.BlueprintInfo;
 import com.portfolio.BlueprintsManagement.domain.repository.IArchitecturalDrawingRepository;
 import com.portfolio.BlueprintsManagement.domain.repository.IBlueprintRepository;
+import com.portfolio.BlueprintsManagement.presentation.dto.message.ErrorMessage;
 import com.portfolio.BlueprintsManagement.presentation.dto.request.blueprint.AddBlueprintRequest;
 import com.portfolio.BlueprintsManagement.presentation.dto.request.blueprint.DeleteBlueprintRequest;
 import com.portfolio.BlueprintsManagement.presentation.dto.request.blueprint.UpdateBlueprintRequest;
+import com.portfolio.BlueprintsManagement.presentation.exception.customException.FailedToPutObjectException;
 import com.portfolio.BlueprintsManagement.presentation.exception.customException.NotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,6 +20,9 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
+import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.io.IOException;
 import java.util.List;
@@ -36,6 +41,9 @@ class BlueprintServiceTest {
     @Mock
     private IArchitecturalDrawingRepository architecturalDrawingRepository;
 
+    @Mock
+    private S3Client s3;
+
     private String siteId;
     private String blueprintId;
     private String architecturalDrawingId;
@@ -49,16 +57,16 @@ class BlueprintServiceTest {
 
     @BeforeEach
     public void before() {
-        sut = new BlueprintService(blueprintRepository, architecturalDrawingRepository);
+        sut = new BlueprintService(blueprintRepository, architecturalDrawingRepository, s3, "test-bucket");
         createInitialSampleData();
         dummyImageFile = new byte[100];
         MockMultipartFile mockImage = new MockMultipartFile("imageFile", "dummy.png", "image/png", dummyImageFile);
         request = new AddBlueprintRequest(siteId, "平面図", "2025-01-01", mockImage);
 
         blueprintMockedStatic = mockStatic(Blueprint.class);
-        blueprintMockedStatic.when(() -> Blueprint.formBlueprint(request)).thenReturn(blueprint);
+        blueprintMockedStatic.when(() -> Blueprint.formBlueprint(any())).thenReturn(blueprint);
         architecturalDrawingMockedStatic = mockStatic(ArchitecturalDrawing.class);
-        architecturalDrawingMockedStatic.when(() -> ArchitecturalDrawing.formArchitecturalDrawingFromBlueprintRequest(request, blueprintId, "image/dummy.png")).thenReturn(architecturalDrawing);
+        architecturalDrawingMockedStatic.when(() -> ArchitecturalDrawing.formArchitecturalDrawingFromBlueprintRequest(any(), any(), any())).thenReturn(architecturalDrawing);
     }
 
     @AfterEach
@@ -73,7 +81,7 @@ class BlueprintServiceTest {
         blueprint = new Blueprint(blueprintId, siteId, "平面図");
 
         architecturalDrawingId = "11000000-0000-1000-8000-000000000001";
-        architecturalDrawing = new ArchitecturalDrawing(architecturalDrawingId, blueprintId, "2025-01-01", "static/image/hoge.png");
+        architecturalDrawing = new ArchitecturalDrawing(architecturalDrawingId, blueprintId, "2025-01-01", "image/hoge.png");
     }
 
     @Nested
@@ -127,14 +135,29 @@ class BlueprintServiceTest {
         }
     }
 
-    @Test
-    void 図面の追加＿リポジトリが実行されること() throws IOException {
-        String actual = sut.addBlueprint(request);
+    @Nested
+    class addBlueprintTest {
 
-        verify(blueprintRepository, times(1)).addBlueprint(blueprint);
-        verify(architecturalDrawingRepository, times(1)).addArchitecturalDrawing(architecturalDrawing);
-        assertEquals(blueprintId, actual);
+        @Test
+        void 図面の追加＿リポジトリとputObjectメソッドが実行されること() throws IOException {
+            String actual = sut.addBlueprint(request);
+
+            verify(blueprintRepository, times(1)).addBlueprint(blueprint);
+            verify(architecturalDrawingRepository, times(1)).addArchitecturalDrawing(architecturalDrawing);
+            verify(s3).putObject(any(PutObjectRequest.class), any(RequestBody.class));
+            assertEquals(blueprintId, actual);
+        }
+
+        @Test
+        void 図面の追加＿putObjectメソッドが失敗したとき例外処理が発生すること() {
+            when(s3.putObject(any(PutObjectRequest.class), any(RequestBody.class))).thenThrow(new FailedToPutObjectException(ErrorMessage.FAILED_TO_PUT_OBJECT.getMessage()));
+
+            FailedToPutObjectException result = assertThrows(FailedToPutObjectException.class, () -> sut.addBlueprint(request));
+
+            assertEquals("ファイルのアップロードに失敗しました", result.getMessage());
+        }
     }
+
 
     @Test
     void 図面の更新＿リポジトリが実行されること() {
