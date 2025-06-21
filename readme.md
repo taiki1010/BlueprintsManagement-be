@@ -35,6 +35,7 @@
 ![](https://img.shields.io/badge/npm-black)
 
 インフラ:      
+![](https://img.shields.io/badge/AWS-red)
 ![](https://img.shields.io/badge/MySQL-green)
 ![](https://img.shields.io/badge/Docker-blue)
 
