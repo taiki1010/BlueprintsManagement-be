@@ -45,6 +45,13 @@ public class BlueprintService {
         this.bucketName = bucketName;
     }
 
+    /**
+     * 現場IDに紐づく図面一件を取得します。
+     *
+     * @param siteId 現場ID
+     * @return IDに紐づく図面
+     * @throws NotFoundException 404エラーメッセージ
+     */
     public List<Blueprint> getBlueprintsBySiteId(String siteId) throws NotFoundException {
         if (!blueprintRepository.existBlueprintBySiteId(siteId)) {
             throw new NotFoundException(ErrorMessage.NOT_FOUND_BLUEPRINT_BY_SITE_ID.getMessage());
@@ -52,6 +59,13 @@ public class BlueprintService {
         return blueprintRepository.getBlueprintsBySiteId(siteId);
     }
 
+    /**
+     * 図面IDに紐づく図面一件と図面画像全件を図面情報クラスに格納し取得します。
+     *
+     * @param id 図面ID
+     * @return 図面IDに紐づく図面と図面画像全件
+     * @throws NotFoundException 404エラーメッセージ
+     */
     public BlueprintInfo getBlueprintInfo(String id) throws NotFoundException {
         if (!blueprintRepository.existBlueprint(id)) {
             throw new NotFoundException(ErrorMessage.NOT_FOUND_BLUEPRINT_BY_ID.getMessage());
@@ -61,6 +75,14 @@ public class BlueprintService {
         return new BlueprintInfo(blueprint, architecturalDrawingList);
     }
 
+    /**
+     * 新規図面を追加します。
+     * 画像データをS3にアップロードし、画像ファイルパスをMySQLに保存します。
+     *
+     * @param request 新規図面リクエスト（現場ID, 図面名, 作成日, 図面画像データ）
+     * @return 新規図面ID
+     * @throws IOException アップロードに失敗した場合400エラーメッセージ
+     */
     @Transactional
     public String addBlueprint(AddBlueprintRequest request) throws IOException {
         MultipartFile imageFile = request.getImageFile();
@@ -87,11 +109,23 @@ public class BlueprintService {
         return blueprint.getId();
     }
 
+    /**
+     * IDに紐づく図面名を更新します。
+     *
+     * @param request 更新図面リクエスト（図面ID, 図面名）
+     */
     @Transactional
     public void updateBlueprint(UpdateBlueprintRequest request) {
         blueprintRepository.updateBlueprint(request);
     }
 
+    /**
+     * 図面IDに紐づく図面画像を削除します。
+     * 図面画像が存在しなくなった場合、図面も削除します。
+     *
+     * @param request 削除図面リクエスト（図面画像ID, 図面ID, 作成日, 図面ファイルパス）
+     * @return ture or false
+     */
     @Transactional
     public boolean deleteBlueprint(DeleteBlueprintRequest request) {
         String architecturalDrawingId = request.getId();
