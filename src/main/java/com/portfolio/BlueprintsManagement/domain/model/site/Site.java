@@ -17,6 +17,12 @@ public class Site {
     private String address;
     private String remark;
 
+    /**
+     * リクエスト情報から現場を作成します。
+     *
+     * @param request 現場リクエスト（現場名, 住所, 備考）
+     * @return 新規UUIDが付与された現場
+     */
     public static Site formSite(SiteRequest request) {
         return new Site(
                 UUID.randomUUID().toString(),

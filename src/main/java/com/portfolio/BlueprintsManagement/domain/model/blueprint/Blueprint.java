@@ -14,6 +14,12 @@ public class Blueprint {
     private String siteId;
     private String name;
 
+    /**
+     * リクエスト情報から図面を作成します。
+     *
+     * @param request 追加図面リクエスト（現場ID, 図面名, 作成日, 図面画像データ）
+     * @return 新規UUIDが付与された図面
+     */
     public static Blueprint formBlueprint(AddBlueprintRequest request) {
         return new Blueprint(
                 UUID.randomUUID().toString(),
