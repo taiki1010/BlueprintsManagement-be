@@ -35,8 +35,16 @@ public class ArchitecturalDrawingService {
         this.bucketName = bucketName;
     }
 
+    /**
+     * 図面画像を追加します。
+     * 画像データをS3にアップロードし、画像ファイルパスをMySQLに保存します。
+     *
+     * @param request 図面画像リクエスト（図面ID, 作成日, 図面画像データ）
+     * @return 図面画像
+     * @throws IOException アップロードに失敗した場合400エラーメッセージ
+     */
     @Transactional
-    public ArchitecturalDrawing addArchitecturalDrawing(ArchitecturalDrawingRequest request) throws IOException, FailedToPutObjectException {
+    public ArchitecturalDrawing addArchitecturalDrawing(ArchitecturalDrawingRequest request) throws IOException {
 
         MultipartFile imageFile = request.getImageFile();
         String imageFileName = imageFile.getOriginalFilename();

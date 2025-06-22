@@ -12,6 +12,11 @@ public class AwsConfig {
     @Value("${s3.region.name}")
     private String region;
 
+    /**
+     * S3クライアントにリージョンを設定します。
+     *
+     * @return リージョンを付与したS3クライアント
+     */
     @Bean
     public S3Client s3Client() {
         return S3Client.builder()
