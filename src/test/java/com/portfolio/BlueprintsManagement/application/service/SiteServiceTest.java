@@ -1,9 +1,17 @@
 package com.portfolio.BlueprintsManagement.application.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import com.portfolio.BlueprintsManagement.domain.model.site.Site;
 import com.portfolio.BlueprintsManagement.domain.repository.ISiteRepository;
 import com.portfolio.BlueprintsManagement.presentation.dto.request.site.SiteRequest;
 import com.portfolio.BlueprintsManagement.presentation.exception.customException.NotFoundException;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -12,11 +20,6 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class SiteServiceTest {
@@ -55,8 +58,10 @@ class SiteServiceTest {
 
     @Nested
     class getSitesTest {
+
         @Test
-        void 現場情報の全件取得＿リポジトリが実行されリスト返却されること() throws NotFoundException {
+        void 現場情報の全件取得＿リポジトリが実行されリスト返却されること()
+                throws NotFoundException {
             when(siteRepository.existSites()).thenReturn(true);
             when(sut.getSites()).thenReturn(List.of(site));
             List<Site> expected = List.of(site);
@@ -68,7 +73,8 @@ class SiteServiceTest {
         }
 
         @Test
-        void 現場情報の全件取得＿現場が存在しない場合例外処理が呼ばれること() throws NotFoundException {
+        void 現場情報の全件取得＿現場が存在しない場合例外処理が呼ばれること()
+                throws NotFoundException {
             when(siteRepository.existSites()).thenReturn(false);
             String expected = "現場が追加されていません";
 
@@ -81,8 +87,10 @@ class SiteServiceTest {
 
     @Nested
     class getSiteTest {
+
         @Test
-        void 現場情報の一件検索＿リポジトリが実行され現場一件分のデータが返却されること() throws NotFoundException {
+        void 現場情報の一件検索＿リポジトリが実行され現場一件分のデータが返却されること()
+                throws NotFoundException {
             when(siteRepository.existSite(id)).thenReturn(true);
             when(siteRepository.getSite(id)).thenReturn(site);
             Site expected = site;
@@ -94,7 +102,8 @@ class SiteServiceTest {
         }
 
         @Test
-        void 現場情報の一件検索＿idに該当する現場が存在しない場合例外処理が呼ばれること() throws NotFoundException {
+        void 現場情報の一件検索＿idに該当する現場が存在しない場合例外処理が呼ばれること()
+                throws NotFoundException {
             when(siteRepository.existSite(id)).thenReturn(false);
             String expected = "idに該当する現場が存在しません";
 
@@ -120,6 +129,7 @@ class SiteServiceTest {
 
     @Nested
     class updateSiteTest {
+
         @Test
         void 現場情報の更新＿リポジトリが実行されること() throws NotFoundException {
             when(siteRepository.existSite(id)).thenReturn(true);
@@ -130,11 +140,13 @@ class SiteServiceTest {
         }
 
         @Test
-        void 現場情報の更新＿idに該当する現場が存在しない場合例外が返却処理が呼ばれること() throws NotFoundException {
+        void 現場情報の更新＿idに該当する現場が存在しない場合例外が返却処理が呼ばれること()
+                throws NotFoundException {
             when(siteRepository.existSite(id)).thenReturn(false);
             String expected = "idに該当する現場が存在しません";
 
-            NotFoundException result = assertThrows(NotFoundException.class, () -> sut.updateSite(siteRequest, id));
+            NotFoundException result = assertThrows(NotFoundException.class,
+                    () -> sut.updateSite(siteRequest, id));
             String actual = result.getMessage();
 
             assertEquals(expected, actual);
@@ -143,6 +155,7 @@ class SiteServiceTest {
 
     @Nested
     class deleteSite {
+
         @Test
         void 現場情報の削除＿リポジトリが実行されること() throws NotFoundException {
             when(siteRepository.existSite(id)).thenReturn(true);
@@ -157,7 +170,8 @@ class SiteServiceTest {
             when(siteRepository.existSite(id)).thenReturn(false);
             String expected = "idに該当する現場が存在しません";
 
-            NotFoundException result = assertThrows(NotFoundException.class, () -> sut.deleteSite(id));
+            NotFoundException result = assertThrows(NotFoundException.class,
+                    () -> sut.deleteSite(id));
             String actual = result.getMessage();
 
             assertEquals(expected, actual);

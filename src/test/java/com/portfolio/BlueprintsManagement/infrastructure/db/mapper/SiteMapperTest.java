@@ -1,17 +1,18 @@
 package com.portfolio.BlueprintsManagement.infrastructure.db.mapper;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.portfolio.BlueprintsManagement.domain.model.site.Site;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @MybatisTest
 class SiteMapperTest {
@@ -29,9 +30,12 @@ class SiteMapperTest {
     private List<Site> createSampleSiteList() {
         return new ArrayList<Site>(
                 Arrays.asList(
-                        new Site("00000000-0000-1000-8000-000000000001", "佐藤邸", "東京都表参道", ""),
-                        new Site("00000000-0000-1000-8000-000000000002", "田中邸", "北海道札幌市", ""),
-                        new Site("00000000-0000-1000-8000-000000000003", "青森自動車工場", "青森県青森市", "")
+                        new Site("00000000-0000-1000-8000-000000000001", "佐藤邸", "東京都表参道",
+                                ""),
+                        new Site("00000000-0000-1000-8000-000000000002", "田中邸", "北海道札幌市",
+                                ""),
+                        new Site("00000000-0000-1000-8000-000000000003", "青森自動車工場",
+                                "青森県青森市", "")
                 ));
     }
 
@@ -43,6 +47,7 @@ class SiteMapperTest {
 
     @Nested
     class existSiteTest {
+
         @Test
         void 現場の存在確認＿idに該当する現場存在する場合trueが返却されること() {
             String id = "00000000-0000-1000-8000-000000000001";
@@ -78,7 +83,8 @@ class SiteMapperTest {
 
     @Test
     void 現場の追加＿現場が追加されること() {
-        Site newSite = new Site("00000000-0000-1000-8000-000000000004", "三菱電機工場", "静岡県掛川市", "");
+        Site newSite = new Site("00000000-0000-1000-8000-000000000004", "三菱電機工場",
+                "静岡県掛川市", "");
         siteList.add(newSite);
         List<Site> expected = siteList;
 

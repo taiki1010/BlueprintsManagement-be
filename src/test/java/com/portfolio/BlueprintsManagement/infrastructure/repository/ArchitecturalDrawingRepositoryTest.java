@@ -1,19 +1,20 @@
 package com.portfolio.BlueprintsManagement.infrastructure.repository;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import com.portfolio.BlueprintsManagement.domain.model.architecturalDrawing.ArchitecturalDrawing;
 import com.portfolio.BlueprintsManagement.infrastructure.db.mapper.ArchitecturalDrawingMapper;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ArchitecturalDrawingRepositoryTest {
@@ -37,13 +38,15 @@ class ArchitecturalDrawingRepositoryTest {
     private void createSampleData() {
         id = "11000000-0000-1000-8000-000000000001";
         blueprintId = "10000000-0000-1000-8000-000000000001";
-        architecturalDrawing = new ArchitecturalDrawing(id, blueprintId, "2025-01-01", "/static/image/hoge.png");
+        architecturalDrawing = new ArchitecturalDrawing(id, blueprintId, "2025-01-01",
+                "/static/image/hoge.png");
     }
 
     @Test
     void 図面画像情報の全件取得＿マッパーが実行され全件の図面画像情報が返却されること() {
         List<ArchitecturalDrawing> architecturalDrawingList = List.of(architecturalDrawing);
-        when(architecturalDrawingMapper.selectByBlueprintId(blueprintId)).thenReturn(architecturalDrawingList);
+        when(architecturalDrawingMapper.selectByBlueprintId(blueprintId)).thenReturn(
+                architecturalDrawingList);
 
         List<ArchitecturalDrawing> actual = sut.getArchitecturalDrawingsByBlueprintId(blueprintId);
 
@@ -60,10 +63,12 @@ class ArchitecturalDrawingRepositoryTest {
 
     @Test
     void 図面画像情報の存在確認＿マッパーが実行され真理値が返却されること() {
-        when(architecturalDrawingMapper.existArchitecturalDrawingByBlueprintId(blueprintId)).thenReturn(true);
+        when(architecturalDrawingMapper.existArchitecturalDrawingByBlueprintId(
+                blueprintId)).thenReturn(true);
         boolean actual = sut.existArchitecturalDrawingByBlueprintId(blueprintId);
 
-        verify(architecturalDrawingMapper, times(1)).existArchitecturalDrawingByBlueprintId(blueprintId);
+        verify(architecturalDrawingMapper, times(1)).existArchitecturalDrawingByBlueprintId(
+                blueprintId);
         assertTrue(actual);
     }
 

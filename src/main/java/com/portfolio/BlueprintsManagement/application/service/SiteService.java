@@ -5,11 +5,10 @@ import com.portfolio.BlueprintsManagement.domain.repository.ISiteRepository;
 import com.portfolio.BlueprintsManagement.presentation.dto.message.ErrorMessage;
 import com.portfolio.BlueprintsManagement.presentation.dto.request.site.SiteRequest;
 import com.portfolio.BlueprintsManagement.presentation.exception.customException.NotFoundException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +32,9 @@ public class SiteService {
      * @throws NotFoundException 404エラーメッセージ
      */
     public List<Site> getSites() throws NotFoundException {
-        if (!siteRepository.existSites()) throw new NotFoundException(ErrorMessage.NOT_FOUND_SITES.getMessage());
+        if (!siteRepository.existSites()) {
+            throw new NotFoundException(ErrorMessage.NOT_FOUND_SITES.getMessage());
+        }
         return siteRepository.getSites();
     }
 
@@ -45,7 +46,9 @@ public class SiteService {
      * @throws NotFoundException 404エラーメッセージ
      */
     public Site getSite(String id) throws NotFoundException {
-        if (!siteRepository.existSite(id)) throw new NotFoundException(ErrorMessage.NOT_FOUND_SITE_BY_ID.getMessage());
+        if (!siteRepository.existSite(id)) {
+            throw new NotFoundException(ErrorMessage.NOT_FOUND_SITE_BY_ID.getMessage());
+        }
         return siteRepository.getSite(id);
     }
 
@@ -71,7 +74,9 @@ public class SiteService {
      */
     @Transactional
     public void updateSite(SiteRequest request, String id) throws NotFoundException {
-        if (!siteRepository.existSite(id)) throw new NotFoundException(ErrorMessage.NOT_FOUND_SITE_BY_ID.getMessage());
+        if (!siteRepository.existSite(id)) {
+            throw new NotFoundException(ErrorMessage.NOT_FOUND_SITE_BY_ID.getMessage());
+        }
         Site site = new Site(id, request.getName(), request.getAddress(), request.getRemark());
         siteRepository.updateSite(site);
     }
@@ -84,7 +89,9 @@ public class SiteService {
      */
     @Transactional
     public void deleteSite(String id) throws NotFoundException {
-        if (!siteRepository.existSite(id)) throw new NotFoundException(ErrorMessage.NOT_FOUND_SITE_BY_ID.getMessage());
+        if (!siteRepository.existSite(id)) {
+            throw new NotFoundException(ErrorMessage.NOT_FOUND_SITE_BY_ID.getMessage());
+        }
         siteRepository.deleteSite(id);
     }
 

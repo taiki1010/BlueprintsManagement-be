@@ -1,58 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.portfolio.BlueprintsManagement.infrastructure.db.mapper.SiteMapper">
 
-    <resultMap id="siteResultMap" type="com.portfolio.BlueprintsManagement.domain.model.site.Site">
-        <id column="id" property="id"/>
-        <result column="name" property="name"/>
-        <result column="address" property="address"/>
-        <result column="remark" property="remark"/>
-    </resultMap>
+  <resultMap id="siteResultMap" type="com.portfolio.BlueprintsManagement.domain.model.site.Site">
+    <id column="id" property="id"/>
+    <result column="name" property="name"/>
+    <result column="address" property="address"/>
+    <result column="remark" property="remark"/>
+  </resultMap>
 
-    <select id="existSites">
-        select exists(
-        select *
-        from sites
-        where is_deleted = 0
-        )
-    </select>
+  <select id="existSites">
+    select exists(
+    select *
+    from sites
+    where is_deleted = 0
+    )
+  </select>
 
-    <select id="existSite">
-        select exists(
-        select *
-        from sites
-        where id = #{id}
-        and is_deleted = 0
-        )
-    </select>
+  <select id="existSite">
+    select exists(
+    select *
+    from sites
+    where id = #{id}
+    and is_deleted = 0
+    )
+  </select>
 
-    <select id="select" resultMap="siteResultMap">
-        select id, name, address, remark
-        from sites
-        where is_deleted = 0
-    </select>
+  <select id="select" resultMap="siteResultMap">
+    select id, name, address, remark
+    from sites
+    where is_deleted = 0
+  </select>
 
-    <select id="selectById" resultMap="siteResultMap">
-        select id, name, address, remark
-        from sites
-        where id = #{id} and is_deleted = 0
-    </select>
+  <select id="selectById" resultMap="siteResultMap">
+    select id, name, address, remark
+    from sites
+    where id = #{id} and is_deleted = 0
+  </select>
 
-    <insert id="add">
-        insert into sites(id, name, address, remark, is_deleted)
-        values(#{id}, #{name}, #{address}, #{remark}, 0)
-    </insert>
+  <insert id="add">
+    insert into sites(id, name, address, remark, is_deleted)
+    values(#{id}, #{name}, #{address}, #{remark}, 0)
+  </insert>
 
-    <update id="update">
-        update sites
-        set name = #{name}, address = #{address}, remark = #{remark}
-        where id = #{id}
-    </update>
+  <update id="update">
+    update sites
+    set name = #{name}, address = #{address}, remark = #{remark}
+    where id = #{id}
+  </update>
 
-    <update id="delete">
-        update sites
-        set is_deleted = 1
-        where id = #{id}
-    </update>
+  <update id="delete">
+    update sites
+    set is_deleted = 1
+    where id = #{id}
+  </update>
 </mapper>

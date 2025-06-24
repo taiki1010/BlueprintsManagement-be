@@ -3,10 +3,9 @@ package com.portfolio.BlueprintsManagement.domain.model.architecturalDrawing;
 import com.portfolio.BlueprintsManagement.presentation.dto.request.architecturalDrawing.ArchitecturalDrawingRequest;
 import com.portfolio.BlueprintsManagement.presentation.dto.request.blueprint.AddBlueprintRequest;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-
-import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -32,7 +31,8 @@ public class ArchitecturalDrawing {
      * @param filePath 画像ファイルパス
      * @return 新規UUIDが付与された図面画像
      */
-    public static ArchitecturalDrawing formArchitecturalDrawingFromBlueprintRequest(AddBlueprintRequest request, String id, String filePath) {
+    public static ArchitecturalDrawing formArchitecturalDrawingFromBlueprintRequest(
+            AddBlueprintRequest request, String id, String filePath) {
         return new ArchitecturalDrawing(
                 UUID.randomUUID().toString(),
                 id,
@@ -48,7 +48,8 @@ public class ArchitecturalDrawing {
      * @param filePath 画像ファイルパス
      * @return 新規UUIDが付与された図面画像
      */
-    public static ArchitecturalDrawing formArchitecturalDrawing(ArchitecturalDrawingRequest request, String filePath) {
+    public static ArchitecturalDrawing formArchitecturalDrawing(ArchitecturalDrawingRequest request,
+            String filePath) {
         return new ArchitecturalDrawing(
                 UUID.randomUUID().toString(),
                 request.getBlueprintId(),

@@ -1,5 +1,15 @@
 package com.portfolio.BlueprintsManagement.application.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import com.portfolio.BlueprintsManagement.domain.model.architecturalDrawing.ArchitecturalDrawing;
 import com.portfolio.BlueprintsManagement.domain.model.blueprint.Blueprint;
 import com.portfolio.BlueprintsManagement.domain.model.blueprintInfo.BlueprintInfo;
@@ -11,6 +21,8 @@ import com.portfolio.BlueprintsManagement.presentation.dto.request.blueprint.Del
 import com.portfolio.BlueprintsManagement.presentation.dto.request.blueprint.UpdateBlueprintRequest;
 import com.portfolio.BlueprintsManagement.presentation.exception.customException.FailedToPutObjectException;
 import com.portfolio.BlueprintsManagement.presentation.exception.customException.NotFoundException;
+import java.io.IOException;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -23,12 +35,6 @@ import org.springframework.mock.web.MockMultipartFile;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
-
-import java.io.IOException;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class BlueprintServiceTest {
@@ -57,16 +63,20 @@ class BlueprintServiceTest {
 
     @BeforeEach
     public void before() {
-        sut = new BlueprintService(blueprintRepository, architecturalDrawingRepository, s3, "test-bucket");
+        sut = new BlueprintService(blueprintRepository, architecturalDrawingRepository, s3,
+                "test-bucket");
         createInitialSampleData();
         dummyImageFile = new byte[100];
-        MockMultipartFile mockImage = new MockMultipartFile("imageFile", "dummy.png", "image/png", dummyImageFile);
+        MockMultipartFile mockImage = new MockMultipartFile("imageFile", "dummy.png", "image/png",
+                dummyImageFile);
         request = new AddBlueprintRequest(siteId, "平面図", "2025-01-01", mockImage);
 
         blueprintMockedStatic = mockStatic(Blueprint.class);
         blueprintMockedStatic.when(() -> Blueprint.formBlueprint(any())).thenReturn(blueprint);
         architecturalDrawingMockedStatic = mockStatic(ArchitecturalDrawing.class);
-        architecturalDrawingMockedStatic.when(() -> ArchitecturalDrawing.formArchitecturalDrawingFromBlueprintRequest(any(), any(), any())).thenReturn(architecturalDrawing);
+        architecturalDrawingMockedStatic.when(
+                () -> ArchitecturalDrawing.formArchitecturalDrawingFromBlueprintRequest(any(),
+                        any(), any())).thenReturn(architecturalDrawing);
     }
 
     @AfterEach
@@ -81,13 +91,16 @@ class BlueprintServiceTest {
         blueprint = new Blueprint(blueprintId, siteId, "平面図");
 
         architecturalDrawingId = "11000000-0000-1000-8000-000000000001";
-        architecturalDrawing = new ArchitecturalDrawing(architecturalDrawingId, blueprintId, "2025-01-01", "image/hoge.png");
+        architecturalDrawing = new ArchitecturalDrawing(architecturalDrawingId, blueprintId,
+                "2025-01-01", "image/hoge.png");
     }
 
     @Nested
     class getBlueprintBySiteIdTest {
+
         @Test
-        void 図面の全件取得＿リポジトリが実行され図面リストが返却されること() throws NotFoundException {
+        void 図面の全件取得＿リポジトリが実行され図面リストが返却されること()
+                throws NotFoundException {
             when(blueprintRepository.existBlueprintBySiteId(siteId)).thenReturn(true);
             when(blueprintRepository.getBlueprintsBySiteId(siteId)).thenReturn(List.of(blueprint));
             List<Blueprint> expected = List.of(blueprint);
@@ -102,7 +115,8 @@ class BlueprintServiceTest {
             when(blueprintRepository.existBlueprintBySiteId(siteId)).thenReturn(false);
             String expected = "現場idに該当する図面情報が存在しません";
 
-            NotFoundException result = assertThrows(NotFoundException.class, () -> sut.getBlueprintsBySiteId(siteId));
+            NotFoundException result = assertThrows(NotFoundException.class,
+                    () -> sut.getBlueprintsBySiteId(siteId));
             String actual = result.getMessage();
 
             assertEquals(expected, actual);
@@ -111,11 +125,14 @@ class BlueprintServiceTest {
 
     @Nested
     class getBlueprintInfoTest {
+
         @Test
-        void 図面情報の一件取得＿リポジトリが実行され図面情報が一件分返却されること() throws NotFoundException {
+        void 図面情報の一件取得＿リポジトリが実行され図面情報が一件分返却されること()
+                throws NotFoundException {
             when(blueprintRepository.existBlueprint(blueprintId)).thenReturn(true);
             when(blueprintRepository.getBlueprint(blueprintId)).thenReturn(blueprint);
-            when(architecturalDrawingRepository.getArchitecturalDrawingsByBlueprintId(blueprintId)).thenReturn(List.of(architecturalDrawing));
+            when(architecturalDrawingRepository.getArchitecturalDrawingsByBlueprintId(
+                    blueprintId)).thenReturn(List.of(architecturalDrawing));
             BlueprintInfo expected = new BlueprintInfo(blueprint, List.of(architecturalDrawing));
 
             BlueprintInfo actual = sut.getBlueprintInfo(blueprintId);
@@ -128,7 +145,8 @@ class BlueprintServiceTest {
             when(blueprintRepository.existBlueprint(blueprintId)).thenReturn(false);
             String expected = "idに該当する図面情報が存在しません";
 
-            NotFoundException result = assertThrows(NotFoundException.class, () -> sut.getBlueprintInfo(blueprintId));
+            NotFoundException result = assertThrows(NotFoundException.class,
+                    () -> sut.getBlueprintInfo(blueprintId));
             String actual = result.getMessage();
 
             assertEquals(expected, actual);
@@ -143,16 +161,19 @@ class BlueprintServiceTest {
             String actual = sut.addBlueprint(request);
 
             verify(blueprintRepository, times(1)).addBlueprint(blueprint);
-            verify(architecturalDrawingRepository, times(1)).addArchitecturalDrawing(architecturalDrawing);
+            verify(architecturalDrawingRepository, times(1)).addArchitecturalDrawing(
+                    architecturalDrawing);
             verify(s3).putObject(any(PutObjectRequest.class), any(RequestBody.class));
             assertEquals(blueprintId, actual);
         }
 
         @Test
         void 図面の追加＿putObjectメソッドが失敗したとき例外処理が発生すること() {
-            when(s3.putObject(any(PutObjectRequest.class), any(RequestBody.class))).thenThrow(new FailedToPutObjectException(ErrorMessage.FAILED_TO_PUT_OBJECT.getMessage()));
+            when(s3.putObject(any(PutObjectRequest.class), any(RequestBody.class))).thenThrow(
+                    new FailedToPutObjectException(ErrorMessage.FAILED_TO_PUT_OBJECT.getMessage()));
 
-            FailedToPutObjectException result = assertThrows(FailedToPutObjectException.class, () -> sut.addBlueprint(request));
+            FailedToPutObjectException result = assertThrows(FailedToPutObjectException.class,
+                    () -> sut.addBlueprint(request));
 
             assertEquals("ファイルのアップロードに失敗しました", result.getMessage());
         }
@@ -170,18 +191,23 @@ class BlueprintServiceTest {
 
     @Nested
     class deleteBlueprintTest {
+
         @Test
         void 図面削除＿図面画像が削除され図面idに該当する図面画像が存在しなくなった場合falseを返却すること() {
-            DeleteBlueprintRequest request = new DeleteBlueprintRequest(siteId, blueprintId, "2025-01-01", "static/image/hoge.png");
-            when(architecturalDrawingRepository.existArchitecturalDrawingByBlueprintId(request.getBlueprintId())).thenReturn(true);
+            DeleteBlueprintRequest request = new DeleteBlueprintRequest(siteId, blueprintId,
+                    "2025-01-01", "static/image/hoge.png");
+            when(architecturalDrawingRepository.existArchitecturalDrawingByBlueprintId(
+                    request.getBlueprintId())).thenReturn(true);
 
             assertFalse(sut.deleteBlueprint(request));
         }
 
         @Test
         void 図面削除＿図面画像が削除され図面idに該当する図面画像がまだ存在する場合リポジトリが実行されtrueを返却すること() {
-            DeleteBlueprintRequest request = new DeleteBlueprintRequest(siteId, blueprintId, "2025-01-01", "static/image/hoge.png");
-            when(architecturalDrawingRepository.existArchitecturalDrawingByBlueprintId(request.getBlueprintId())).thenReturn(false);
+            DeleteBlueprintRequest request = new DeleteBlueprintRequest(siteId, blueprintId,
+                    "2025-01-01", "static/image/hoge.png");
+            when(architecturalDrawingRepository.existArchitecturalDrawingByBlueprintId(
+                    request.getBlueprintId())).thenReturn(false);
 
             assertTrue(sut.deleteBlueprint(request));
             verify(blueprintRepository, times(1)).deleteBlueprint(blueprintId);
