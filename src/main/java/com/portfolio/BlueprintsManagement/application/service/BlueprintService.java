@@ -11,6 +11,8 @@ import com.portfolio.BlueprintsManagement.presentation.dto.request.blueprint.Del
 import com.portfolio.BlueprintsManagement.presentation.dto.request.blueprint.UpdateBlueprintRequest;
 import com.portfolio.BlueprintsManagement.presentation.exception.customException.FailedToPutObjectException;
 import com.portfolio.BlueprintsManagement.presentation.exception.customException.NotFoundException;
+import java.io.IOException;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -19,9 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
-
-import java.io.IOException;
-import java.util.List;
 
 @Service
 public class BlueprintService {
@@ -71,13 +70,13 @@ public class BlueprintService {
             throw new NotFoundException(ErrorMessage.NOT_FOUND_BLUEPRINT_BY_ID.getMessage());
         }
         Blueprint blueprint = blueprintRepository.getBlueprint(id);
-        List<ArchitecturalDrawing> architecturalDrawingList = architecturalDrawingRepository.getArchitecturalDrawingsByBlueprintId(id);
+        List<ArchitecturalDrawing> architecturalDrawingList = architecturalDrawingRepository.getArchitecturalDrawingsByBlueprintId(
+                id);
         return new BlueprintInfo(blueprint, architecturalDrawingList);
     }
 
     /**
-     * 新規図面を追加します。
-     * 画像データをS3にアップロードし、画像ファイルパスをMySQLに保存します。
+     * 新規図面を追加します。 画像データをS3にアップロードし、画像ファイルパスをMySQLに保存します。
      *
      * @param request 新規図面リクエスト（現場ID, 図面名, 作成日, 図面画像データ）
      * @return 新規図面ID
@@ -92,7 +91,8 @@ public class BlueprintService {
         Blueprint blueprint = Blueprint.formBlueprint(request);
         String filePath = blueprint.getId() + "/" + imageFileName;
 
-        ArchitecturalDrawing architecturalDrawing = ArchitecturalDrawing.formArchitecturalDrawingFromBlueprintRequest(request, blueprint.getId(), filePath);
+        ArchitecturalDrawing architecturalDrawing = ArchitecturalDrawing.formArchitecturalDrawingFromBlueprintRequest(
+                request, blueprint.getId(), filePath);
 
         blueprintRepository.addBlueprint(blueprint);
         architecturalDrawingRepository.addArchitecturalDrawing(architecturalDrawing);
@@ -120,8 +120,7 @@ public class BlueprintService {
     }
 
     /**
-     * 図面IDに紐づく図面画像を削除します。
-     * 図面画像が存在しなくなった場合、図面も削除します。
+     * 図面IDに紐づく図面画像を削除します。 図面画像が存在しなくなった場合、図面も削除します。
      *
      * @param request 削除図面リクエスト（図面画像ID, 図面ID, 作成日, 図面ファイルパス）
      * @return ture or false

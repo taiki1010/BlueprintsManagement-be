@@ -1,17 +1,18 @@
 package com.portfolio.BlueprintsManagement.infrastructure.db.mapper;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.portfolio.BlueprintsManagement.domain.model.blueprint.Blueprint;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @MybatisTest
 class BlueprintMapperTest {
@@ -29,15 +30,19 @@ class BlueprintMapperTest {
     private List<Blueprint> createSampleBlueprintList() {
         return new ArrayList<Blueprint>(
                 Arrays.asList(
-                        new Blueprint("10000000-0000-1000-8000-000000000001", "00000000-0000-1000-8000-000000000001", "平面図 １階"),
-                        new Blueprint("10000000-0000-1000-8000-000000000002", "00000000-0000-1000-8000-000000000002", "配線図 １階"),
-                        new Blueprint("10000000-0000-1000-8000-000000000003", "00000000-0000-1000-8000-000000000003", "立面図")
+                        new Blueprint("10000000-0000-1000-8000-000000000001",
+                                "00000000-0000-1000-8000-000000000001", "平面図 １階"),
+                        new Blueprint("10000000-0000-1000-8000-000000000002",
+                                "00000000-0000-1000-8000-000000000002", "配線図 １階"),
+                        new Blueprint("10000000-0000-1000-8000-000000000003",
+                                "00000000-0000-1000-8000-000000000003", "立面図")
                 )
         );
     }
 
     @Nested
     class existBlueprintBySiteIdTest {
+
         @Test
         void 図面の存在確認＿現場idに該当する図面が存在する場合trueが返却されること() {
             String siteId = "00000000-0000-1000-8000-000000000001";
@@ -55,6 +60,7 @@ class BlueprintMapperTest {
 
     @Nested
     class existBlueprintTest {
+
         @Test
         void 図面の存在確認＿idに該当する図面が存在する場合trueが返却されること() {
             String id = "10000000-0000-1000-8000-000000000001";
@@ -73,7 +79,8 @@ class BlueprintMapperTest {
     @Test
     void 図面の全件取得＿現場idに該当する図面の全件が返却されること() {
         String siteId = "00000000-0000-1000-8000-000000000001";
-        List<Blueprint> expected = List.of(new Blueprint("10000000-0000-1000-8000-000000000001", "00000000-0000-1000-8000-000000000001", "平面図 １階"));
+        List<Blueprint> expected = List.of(new Blueprint("10000000-0000-1000-8000-000000000001",
+                "00000000-0000-1000-8000-000000000001", "平面図 １階"));
 
         List<Blueprint> actual = sut.selectBySiteId(siteId);
 
@@ -84,7 +91,8 @@ class BlueprintMapperTest {
     @Test
     void 図面の一件取得＿idに該当する図面が返却されること() {
         String id = "10000000-0000-1000-8000-000000000001";
-        Blueprint expected = new Blueprint("10000000-0000-1000-8000-000000000001", "00000000-0000-1000-8000-000000000001", "平面図 １階");
+        Blueprint expected = new Blueprint("10000000-0000-1000-8000-000000000001",
+                "00000000-0000-1000-8000-000000000001", "平面図 １階");
 
         Blueprint actual = sut.select(id);
 
@@ -94,11 +102,14 @@ class BlueprintMapperTest {
     @Test
     void 図面の追加＿図面が追加されること() {
         String siteId = "00000000-0000-1000-8000-000000000001";
-        Blueprint newBlueprint = new Blueprint("10000000-0000-1000-8000-000000000004", siteId, "平面図 2階");
+        Blueprint newBlueprint = new Blueprint("10000000-0000-1000-8000-000000000004", siteId,
+                "平面図 2階");
         blueprintList.add(newBlueprint);
         List<Blueprint> expected = List.of(
-                new Blueprint("10000000-0000-1000-8000-000000000001", "00000000-0000-1000-8000-000000000001", "平面図 １階"),
-                new Blueprint("10000000-0000-1000-8000-000000000004", "00000000-0000-1000-8000-000000000001", "平面図 2階")
+                new Blueprint("10000000-0000-1000-8000-000000000001",
+                        "00000000-0000-1000-8000-000000000001", "平面図 １階"),
+                new Blueprint("10000000-0000-1000-8000-000000000004",
+                        "00000000-0000-1000-8000-000000000001", "平面図 2階")
         );
 
         sut.add(newBlueprint);
