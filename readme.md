@@ -22,6 +22,7 @@
 https://blueprints-management.com/
 
 「管理画面に移動」をクリックします
+（実際の図面を権利の都合上使用できないため、ChatGPTで画像サンプルを作成しています）
 
 <img width="1466" alt="スクリーンショット 2025-06-24 15 18 28" src="https://github.com/user-attachments/assets/53181d62-6c37-4c54-8209-69d0e01a31a5" />
 
