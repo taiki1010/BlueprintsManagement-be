@@ -57,7 +57,7 @@ class ArchitecturalDrawingControllerTest {
 
             mockMvc.perform(multipart("/architecturalDrawings")
                             .file(mockImage)
-                            .param("BlueprintId", "10000000-0000-1000-8000-000000000001")
+                            .param("blueprintId", "10000000-0000-1000-8000-000000000001")
                             .param("createdAt", "2025-01-01"))
                     .andExpect(status().isOk())
                     .andExpect(content().json(expectedJson));
@@ -72,7 +72,7 @@ class ArchitecturalDrawingControllerTest {
 
             mockMvc.perform(multipart("/architecturalDrawings")
                             .file(mockImage)
-                            .param("BlueprintId", "1")
+                            .param("blueprintId", "1")
                             .param("createdAt", "2025-01-01"))
                     .andExpect(status().isBadRequest())
                     .andExpect(content().json(expectedJson));
@@ -86,7 +86,7 @@ class ArchitecturalDrawingControllerTest {
 
             mockMvc.perform(multipart("/architecturalDrawings")
                             .file(mockImage)
-                            .param("BlueprintId", "10000000-0000-1000-8000-000000000001")
+                            .param("blueprintId", "10000000-0000-1000-8000-000000000001")
                             .param("createdAt", "2025-01-01"))
                     .andExpect(status().isBadRequest())
                     .andExpect(content().json(expectedJson));
