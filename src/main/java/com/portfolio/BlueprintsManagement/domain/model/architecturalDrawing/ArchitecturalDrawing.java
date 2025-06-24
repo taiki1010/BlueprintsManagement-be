@@ -2,6 +2,7 @@ package com.portfolio.BlueprintsManagement.domain.model.architecturalDrawing;
 
 import com.portfolio.BlueprintsManagement.presentation.dto.request.architecturalDrawing.ArchitecturalDrawingRequest;
 import com.portfolio.BlueprintsManagement.presentation.dto.request.blueprint.AddBlueprintRequest;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -11,9 +12,16 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ArchitecturalDrawing {
 
+    @Schema(description = "図面画像ID", example = "11000000-0000-1000-8000-000000000001")
     private String id;
-    private String BlueprintId;
+
+    @Schema(description = "図面ID", example = "10000000-0000-1000-8000-000000000001")
+    private String blueprintId;
+
+    @Schema(description = "作成日", example = "2025-01-01")
     private String createdAt;
+
+    @Schema(description = "画像ファイルパス", example = "10000000-0000-1000-8000-000000000001/平面図.png")
     private String filePath;
 
     /**
