@@ -108,6 +108,8 @@ https://github.com/user-attachments/assets/97fe046b-faa8-4942-8045-3ab40834d196
 
 ## APIエンドポイント一覧
 
+[OpenAPIドキュメントはこちら](https://taiki1010.github.io/swagger/)
+
 | HTTPメソッド | エンドポイント | 機能 |
 | ---- | ---- | ---- |
 | HEAD | /sites | 現場情報の存在を確認 |
