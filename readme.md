@@ -1,10 +1,18 @@
-# 図面管理アプリ
+# 図面管理システム
 
 ## はじめに
 
 こちらのリポジトリはJava,JavaScriptを学習中の私が作成した建築図面管理アプリのプロジェクトです。    
 建設業階で働く現場監督、職人の方の業務支援を目的としており、建築図面の管理方法で発生する課題の解決を目的として開発しています。    
 本リポジトリの利用に関するトラブル等について、開発者は一切の責任を負いかねますのでご了承ください。
+
+## 始め方
+https://blueprints-management.com/
+
+「管理画面に移動」をクリックします    
+（実際の図面を権利の都合上使用できないため、ChatGPTで画像サンプルを作成しています）
+
+<img width="1466" alt="スクリーンショット 2025-06-24 15 18 28" src="https://github.com/user-attachments/assets/53181d62-6c37-4c54-8209-69d0e01a31a5" />
 
 ## コンセプト
 
@@ -18,13 +26,90 @@
 そうした課題を解決したいと考え、現場監督や責任者が図面の管理をしやすく、また現場の職人にすぐにシェアできるようにと思い開発をしました。    
 直感的に使えるようシンプルなUIを採用し、現場での業務の効率化を図ります。
 
-## 始め方
-https://blueprints-management.com/
+## 使用技術
 
-「管理画面に移動」をクリックします    
-（実際の図面を権利の都合上使用できないため、ChatGPTで画像サンプルを作成しています）
+### バックエンド
 
-<img width="1466" alt="スクリーンショット 2025-06-24 15 18 28" src="https://github.com/user-attachments/assets/53181d62-6c37-4c54-8209-69d0e01a31a5" />
+| カテゴリ | 使用技術 |
+| ---- | ---- |
+| 言語 | Java 21 |
+| フレームワーク | SpringBoot 3.4.5 |
+| ORM | MyBatis 3.0.4 |
+| テスト | Junit 5 |
+
+### フロントエンド
+
+| カテゴリ | 使用技術 |
+| ---- | ---- |
+| 言語 | JavaScript |
+| 言語 | TypeScript |
+| フレームワーク | Next 15.3.2 |
+| スタイルシート | TailwindCSS 4 |
+
+### インフラ・その他
+
+| カテゴリ | 使用技術 |
+| ---- | ---- |
+| デプロイ | AWS |
+| バージョン管理 | Git・Github |
+| コンテナ | Docker |
+| データベース | MySQL |
+
+## APIエンドポイント一覧
+
+[OpenAPIドキュメントはこちら](https://taiki1010.github.io/swagger/)
+
+| HTTPメソッド | エンドポイント | 機能 |
+| ---- | ---- | ---- |
+| HEAD | /sites | 現場情報の存在を確認 |
+| GET | /sites | 現場情報一覧の取得 |
+| GET | /sites/{siteId} | 現場情報一件の取得(ID指定) |
+| GET | /sites | 現場情報一覧の取得 |
+| GET | /sites/{siteId}/blueprints | 現場IDに該当する図面情報一覧の取得 |
+| POST | /sites | 現場情報の追加 |
+| PUT | /sites/{siteId} | 現場情報の更新 |
+| DELETE | /sites/{siteId} | 現場情報の削除 |
+| GET | /blueprints/{blueprintId} | 図面情報の取得(ID指定) |
+| POST | /blueprints | 図面情報の追加 |
+| PUT | /blueprints | 図面情報の更新 |
+| DELETE | /blueprints | 図面情報の削除 |
+| POST | /architecturalDrawings | 図面画像情報の追加 |
+
+## ER図
+
+```mermaid
+erDiagram
+    sites ||--o{ blueprints: "1つの現場は0以上の図面を持つ"
+    blueprints ||--|{ architectural_drawings: "1つの図面は1以上の図面画像を持つ"
+
+    sites {
+        varchar(36) id PK "サイトID"
+        varchar(50) name "ユーザー名"
+        varchar(161) address "住所"
+        varchar(200) remark "備考"
+        TINYINT(1) is_deleted "削除フラグ"
+    }
+
+    blueprints {
+        varchar(36) id PK "図面ID"
+        varchar(36) site_id FK "現場ID"
+        varchar(20) name "図面名"
+        TINYINT(1) is_deleted "削除フラグ"
+    }
+
+    architectural_drawings {
+        varchar(36) id PK "図面画像ID"
+        varchar(36) blueprint_id FK "図面ID"
+        DATE created_at "作成日"
+        TEXT file_path "ファイルパス"
+        TINYINT(1) is_deleted "削除フラグ"
+    }
+```
+
+## インフラ構成図
+
+![blueprints](https://github.com/user-attachments/assets/63010c4e-4e96-4449-9ea9-f3b75048853c)
+
 
 ## 機能一覧
 
@@ -84,83 +169,6 @@ https://github.com/user-attachments/assets/eff1c08b-0135-4037-a2e3-0ac3171e3596
 複数データが存在する場合、タブを選択することで画面が遷移されます。
 
 https://github.com/user-attachments/assets/97fe046b-faa8-4942-8045-3ab40834d196
-
-## 使用技術
-
-バックエンド: <br>
-![](https://img.shields.io/badge/Java_21-red)
-![](https://img.shields.io/badge/Spring_Boot_3.4.5-green)
-![](https://img.shields.io/badge/JUnit5-yellow)
-![](https://img.shields.io/badge/MyBatis_3.0.4-blue)
-![](https://img.shields.io/badge/Gradle-black)
-
-フロントエンド:       
-![](https://img.shields.io/badge/JavaScript-green)
-![](https://img.shields.io/badge/TypeScript_4-blue)
-![](https://img.shields.io/badge/Next_15.3.2-blue)
-![](https://img.shields.io/badge/TailwindCSS_4-red)
-![](https://img.shields.io/badge/npm-black)
-
-インフラ:      
-![](https://img.shields.io/badge/AWS-red)
-![](https://img.shields.io/badge/MySQL-green)
-![](https://img.shields.io/badge/Docker-blue)
-
-## APIエンドポイント一覧
-
-[OpenAPIドキュメントはこちら](https://taiki1010.github.io/swagger/)
-
-| HTTPメソッド | エンドポイント | 機能 |
-| ---- | ---- | ---- |
-| HEAD | /sites | 現場情報の存在を確認 |
-| GET | /sites | 現場情報一覧の取得 |
-| GET | /sites/{siteId} | 現場情報一件の取得(ID指定) |
-| GET | /sites | 現場情報一覧の取得 |
-| GET | /sites/{siteId}/blueprints | 現場IDに該当する図面情報一覧の取得 |
-| POST | /sites | 現場情報の追加 |
-| PUT | /sites/{siteId} | 現場情報の更新 |
-| DELETE | /sites/{siteId} | 現場情報の削除 |
-| GET | /blueprints/{blueprintId} | 図面情報の取得(ID指定) |
-| POST | /blueprints | 図面情報の追加 |
-| PUT | /blueprints | 図面情報の更新 |
-| DELETE | /blueprints | 図面情報の削除 |
-| POST | /architecturalDrawings | 図面画像情報の追加 |
-
-## ER図
-
-```mermaid
-erDiagram
-    sites ||--o{ blueprints: "1つの現場は0以上の図面を持つ"
-    blueprints ||--|{ architectural_drawings: "1つの図面は1以上の図面画像を持つ"
-
-    sites {
-        varchar(36) id PK "サイトID"
-        varchar(50) name "ユーザー名"
-        varchar(161) address "住所"
-        varchar(200) remark "備考"
-        TINYINT(1) is_deleted "削除フラグ"
-    }
-
-    blueprints {
-        varchar(36) id PK "図面ID"
-        varchar(36) site_id FK "現場ID"
-        varchar(20) name "図面名"
-        TINYINT(1) is_deleted "削除フラグ"
-    }
-
-    architectural_drawings {
-        varchar(36) id PK "図面画像ID"
-        varchar(36) blueprint_id FK "図面ID"
-        DATE created_at "作成日"
-        TEXT file_path "ファイルパス"
-        TINYINT(1) is_deleted "削除フラグ"
-    }
-```
-
-## インフラ構成図
-
-![blueprints](https://github.com/user-attachments/assets/63010c4e-4e96-4449-9ea9-f3b75048853c)
-
 
 ## テスト実行結果
 
