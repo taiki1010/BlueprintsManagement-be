@@ -198,7 +198,7 @@ JUnit5による単体テストを実装しています。
 
   などさまざまな壁がありましたが、一つ一つクリアしていき、想定通りの動作が実現できました。
 
-    ```
+    
     @Transactional
     public String addBlueprint(AddBlueprintRequest request) throws IOException {
         MultipartFile imageFile = request.getImageFile();
@@ -225,7 +225,7 @@ JUnit5による単体テストを実装しています。
     
         return blueprint.getId();
     }
-    ```
+    
 
 ### dockerの導入
   ローカル環境ではMySQLをdockerで構築し、データベースのやり取りを行いました。    
